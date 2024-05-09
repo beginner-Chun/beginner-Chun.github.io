@@ -1,0 +1,713 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>SQLserver基础篇 | ifChun</title><meta name="keywords" content="java SQLserver"><meta name="author" content="Huang_Chun"><meta name="copyright" content="Huang_Chun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="SQLserver基础篇"><meta name="application-name" content="SQLserver基础篇"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="SQLserver基础篇"><meta property="og:url" content="https://www.dachun.icu/2024/05/09/SQLserver%E5%9F%BA%E7%A1%80%E7%AF%87/index.html"><meta property="og:site_name" content="ifChun"><meta property="og:description" content="SQL Server 编程语法局部变量  声明: declare @局部变量名 数据类型；  declare @var1 int， @var2 datetime； 1234567892. 赋值   1. &amp;#96;&amp;#96;&amp;#96;sql      set @变量名 &amp;#x3D; 表达式；            select @"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://chunimages.oss-cn-guangzhou.aliyuncs.com/e68192338c9fc0a8b09180d0453c6389.jpg"><meta property="article:author" content="Huang_Chun"><meta property="article:tag" content="java"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://chunimages.oss-cn-guangzhou.aliyuncs.com/e68192338c9fc0a8b09180d0453c6389.jpg"><meta name="description" content="SQL Server 编程语法局部变量  声明: declare @局部变量名 数据类型；  declare @var1 int， @var2 datetime； 1234567892. 赋值   1. &amp;#96;&amp;#96;&amp;#96;sql      set @变量名 &amp;#x3D; 表达式；            select @"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="https://www.dachun.icu/2024/05/09/SQLserver%E5%9F%BA%E7%A1%80%E7%AF%87/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: {"enable":true,"img":"https://upload-bbs.miyoushe.com/upload/2023/09/03/125766904/ee23df8517f3c3e3efc4145658269c06_5714860933110284659.png"},
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 你要不再看看？","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":true,"limitCount":50,"languages":{"author":"作者: Huang_Chun","link":"链接: ","source":"来源: ifChun","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'ifChun',
+  title: 'SQLserver基础篇',
+  postAI: '',
+  pageFillDescription: 'SQL Server 编程语法, 局部变量, 显示信息, if…else, goto语句, case语句, 视图, 定义视图, 查询视图, 更新视图, insertupdatedelete触发器, INSERT 触发器, DELETE 触发器, UPDATE 触发器, INSTEAD OF 触发器, 数据库的完整性, 约束, 数据库安全, 用户管理和角色管理, 用户管理：, 角色管理：, 固定角色, 权限管理, 架构, 1. 身份验证（Authentication）：, 2. 授权（Authorization）：, 3. 访问控制（Access Control）：, 4. 加密（Encryption）：, 5. 审计（Auditing）：, 6. 数据库安全策略（Database Security Policy）：编程语法局部变量声明局部变量名数据类型赋值变量名表达式变量名表达式变量表达式或列名变量表达式或列名表名条件表达式显示信息语句变量名文本形式显示变量名表格形式显示语句用于返回错误信息的同时返回用户指定的信息设置了一个系统标记记录产生的错误错误号错误信息严重度批处理批处理是成组执行的一条或多条指令被作为整体进行语法分析优化编译和执行语句用于指定批处理语句的结束处单独占用一行流程控制语句语句将多条语句封装起来形成一个语句块使这些语句作为一个整体执行语句判断语句条件表达式语句条件表达式语句语句语句用与关键字结合使用用于检测是否存在满足条件的记录只要检测到一条记录存在返回真循环语句设置一个反复执行语句块直到条件不满足为止逻辑表达式语句与语句结合使用语句使用语句可以使语句的执行无条件地转移到指定的标号位置常用于和语句中以跳出循环和分支处理语句可以在某一个时刻或某一个时间间隔之后执行语句语句块存储过程等时间语句在某一个时间间隔之后执行语句时间语句某一个时刻之后执行语句时间参数的数据类型为但不带日期格式为语句语句用于根据多个分支条件确定执行内容语句列出一个或多个分支条件并对每个分支条件给出候选值北京上海广州未知语句使查询或存储过程返回使用语句可以立即从当前程序结构中退出并且后面的语句不再执行整形表达式一般情况下只有存储过程才会使用返回的整型结果调用存储过程的语句可以根据语句返回的值判断下一步应该执行的操作视图定义视图语法视图名子查询表示用视图进行操作时要保证更新插入删除查询的元组要满足视图定义中的谓语条件即子查询的条件表达式表示对该视图加密子查询可以是任意的语句但是不能含有子句删除视图语法视图名视图查询视图视图在定义后用户可以像查询基本表一样查询视图查看视图的创建信息视图名查看视图的定义脚本视图名查看加密视图的定义脚本视图名更新视图更新视图同更新基本表一样更新视图最终是更新基表视图名中规定以下视图无法更新视图的字段来自聚合函数视图的定义时含有子句视图在定义时含有短语在一个不允许更新的视图上定义的视图也不允许更新存储过程存储过程是存储在数据库服务器中的一组编译成单个执行计划的语句存储过程在创建时被编译和优化在调用一次后相关信息就保存在内存中下次调用直接执行好处运行效率高降低了客户机和服务器组件的通信量利于集中控制和维护创建存储过程简单存储过程的创建和执行创建存储过程名语句增删改查遇到表示代码结束执行存储过程名带输入参数的存储过程的创建和执行创建存储过程名参数类型参数类型可从编译和加密语句执行存储过程名参数值参数值存储过程名参数参数带输出参数的存储过程创建存储过程名参数类型语句执行变量名类型存储过程名变量名变量名修改和删除存储过程修改存储过程名删除存储过程名触发器基本概念触发器是用户定义在关系表上的一类有事件驱动特殊过程也是一种保存数据完整性的方法触发器实际上是一类特殊的存储过程其特殊性表现在一旦定义无序用户调用任何对表的操作都由服务器自动激活相应的触发器触发器的主要作用是实现主键和外键不能保证复杂的参照完整性和数据的一致性触发器的工作原理表对操作来说表中存放的是要插入的数据而对于操作来说表中存放的是要更新的记录即更新后的新值表对操作来说表中存放的是被删除的记录而对于操作来书表中存放的是更新前的记录更新完毕后即被删除触发器分为触发器和触发器触发器的工作原理触发器是一种类型的触发器它在触发事件如或之后执行具体来说触发器会在主要操作完成后立即执行即在数据已经被插入更新或删除之后触发工作原理如下当对表执行或操作时这些操作会触发对应的触发器数据库引擎首先执行主要的数据操作如将新记录插入到表中然后数据库引擎会检查与该表相关的任何触发器如果存在匹配的触发器则执行触发器中定义的逻辑在触发器内部逻辑执行完毕后主要的数据操作才算真正完成总结起来触发器在主要数据操作完成后处理其他相关逻辑允许开发者对操作结果进行进一步处理记录日志或实施其他业务规则使用触发器可以确保触发器中的逻辑不会影响主要数据操作的性能并且可以有效地控制数据的变化过程触发器的工作原理触发器是另一种类型的触发器与触发器不同它在触发事件之前执行具体来说触发器会在主要操作执行之前替代原始操作允许开发者自定义对数据的处理逻辑工作原理如下当对表执行或操作时这些操作会触发关联的触发器数据库引擎首先检查是否有相应的触发器并在有触发器的情况下执行触发器中定义的逻辑在触发器内部逻辑中开发者可以根据需求编写自定义的处理代码例如拒绝操作修改数据调用其他存储过程等最终数据库引擎将采取触发器内部逻辑所定义的行为而不是直接执行原始的数据库操作总结起来触发器提供了一种在数据操作执行之前干预和修改操作的机制通过使用这种触发器开发者可以控制数据库操作的行为实现更灵活的数据处理和业务规则约束创建触发器创建触发器的关键字后面跟着触发器的名称触发器的名称在同一表上需要唯一触发器所属的表名指定触发器与哪个表相关联触发器的类型和触发时机在这个例子中触发器被定义为在插入更新或删除操之后触发可以根据需求选择其中一种或多种触发时机触发器逻辑的开始标记触发器逻辑的起始点触发器逻辑的结束标记在创建触发器时需要指定触发器的名称所属表触发时机以及触发器内部的逻辑触发器的逻辑部分可以包含对数据的处理约束实施日志记录等操作触发器的作用是监听表上的指定事件并在事件发生时执行特定的逻辑触发器触发器触发器会在向表中插入新记录时触发可以用于实现自动填充字段数据验证等功能触发器触发器会在从表中删除记录时触发可以用于记录被删除的数据级联删除相关数据等操作触发器触发器会在更新表中的记录时触发可以用于记录变更历史检查数据一致性等功能在实际应用中开发者可以根据需要编写逻辑来执行相应的操作触发器能够为数据库操作提供灵活的扩展和控制机制帮助确保数据的完整性和一致性触发器触发器是一种特殊的触发器它会在执行或操作之前触发与触发器不同触发器可以用于在操作被执行之前干预和处理数据而不是在操作完成后触发器通常用于对视图或具有特殊约束条件的表进行操作以实现自定义的数据处理逻辑以下是一个简单的触发器示例在上述代码中创建触发器的关键字触发器的名称触发器所属的视图名称触发器类型为表示在插入操作执行之前触发触发器触发器逻辑的开始标记触发器逻辑的起始点触发器逻辑的结束标记触发器允许开发者在插入更新或删除操作执行之前进行自定义处理例如拒绝操作修改数据调用其他存储过程等这些触发器提供了灵活的机制来实现复杂的业务逻辑和数据处理需求数据库的完整性约束约束通过限制列中的数据行中的数据和表之间的数据来保证数据完整性在表创建完成后再添加约束添加主键约束表名约束名列名添加用于自定义的约束表名约束名表达式添加默认值约束表名约束名值列名删除约束表名约束名查看约束名表名默认值默认是一种数据库对象可以绑定到表的一列或多列上也可以绑定到用于自定义的数据类型上其作用类似于约束默认约束是或语句中定义后被嵌入到定义的表结构中也就是说在删除表的时候默认约束也将随之被删除创建默认默认对象名常量表达式常量表达式可以是常量内置函数或数学表达式表达式不能包含任何列名或其他数据库对象绑定默认值默认对象名为指定要绑定的表和列或用户定义的数据类型查看默认默认对象名解除默认删除默认删除之前先解除默认否则报错默认对象名规则规则是数据库对存储在表中的列或用户自定义数据类型中的值的规定和限制时单独存储的独立的数据库对象规则与约束的不同之处约束是在使用语句建表时指定的而规则是独立于表的数据库对象通过与指定表或数据类型来实现完整性约束在一列上只能使用一个规则但可以使用多个约束规则可以应用多个列还可以应用于用户自定义的数据类型而约束只能应用于他定义的列创建规则规则名是规则的定义他可以是用于条件子句中任何表达式以字符开头查看规则规则名绑定和解除规则绑定规则名绑定的对象名自定义类型解除绑定的对象名自定义类型删除规则规则名在删除一个规则前必须先将其绑定的对象解除绑定索引创建索引索引名表名或视图名列名聚集索引唯一索引非聚集索引查看索引表名删除索引表名索引名删除多个索引索引之间用逗号隔开数据库安全用户管理和角色管理的数据库安全涉及用户管理和角色管理这些是确保数据库安全性的重要组成部分以下是中用户管理和角色管理的详细说明用户管理创建用户创建用户以允许他们访问数据库创建身份验证用户创建身份验证用户将用户分配给数据库创建用户并将其分配给数据库将身份验证用户分配给数据库将身份验证用户分配给数据库授权授予用户对数据库对象的权限授予用户权限删除用户在不需要用户访问数据库时可以删除他们删除用户角色管理创建角色创建角色以便将权限组织成逻辑单元创建角色将用户添加到角色将用户添加到角色以便批量管理权限将用户添加到角色授权向角色授予对数据库对象的权限授予权限给角色删除角色在不再需要角色时可以删除它们删除角色固定角色的数据库安全中固定角色是预定义的角色拥有特定的权限和功能用于简化权限管理以下是中常见的固定角色及其说明角色是中最高权限的角色拥有对所有数据库的完全控制权限成员可以执行任何操作包括配置服务器和数据库引擎管理用户权限以及维护数据库角色允许成员配置服务器级别的设置但不能访问或修改用户数据库角色允许成员管理登录服务器级别的安全性设置和配置审核角色允许成员执行活动监视和进程监视任务角色允许成员管理服务器上的安装角色允许成员运行语句角色允许成员管理磁盘文件角色允许成员创建更改删除数据库角色是每个数据库中的默认角色所有用户都是其成员它是其他角色的默认父级所有用户在数据库中都具有角色的权限这些固定角色在中起着重要的作用它们简化了权限管理并提供了一种安全的默认配置根据需要您可以将用户添加到这些角色中以授予他们相应的权限权限管理的数据库安全性通过权限管理来确保数据的安全性和完整性以下是中的权限管理详细说明权限类型中有多种权限类型包括但不限于等每种权限类型都控制用户对数据库对象的不同操作授权授权是指授予用户或角色特定的权限以允许他们执行特定的操作授予用户对表的权限授予角色对表的权限回收权限当不再需要某个用户或角色拥有特定权限时可以撤销授权回收用户对表的权限回收角色对表的权限权限检查在执行敏感操作之前可以使用权限检查来确保用户拥有执行该操作所需的权限检查用户对表的权限执行删除操作您没有执行此操作的权限视图权限可以控制用户对视图的访问权限以保护敏感数据创建视图授予用户对视图的权限存储过程权限存储过程也可以拥有自己的权限控制用户对其执行的访问创建存储过程存储过程逻辑授予用户对存储过程的权限通过以上权限管理措施可以精确地控制用户对数据库对象的访问和操作从而提高数据库的安全性和完整性架构数据库安全的架构是一个综合性的系统涵盖了多个方面包括身份验证授权访问控制加密和审计等以下是数据库安全架构的详细讲解身份验证在中有两种常见的身份验证方式身份验证通过操作系统认证用户的身份身份验证用户需要提供指定的用户名和密码来验证身份授权一旦用户成功登录就需要授权来确定其对数据库对象的访问权限授权通过角色权限和权限层次结构来实现角色角色是权限的集合可以将用户分配到角色中从而简化权限管理权限权限确定了用户或角色可以执行的操作如等权限层次结构中存在数据库级别模式级别和对象级别的权限控制可以细化到单个对象访问控制访问控制确保只有经过授权的用户才能访问数据库对象这包括登录控制限制谁可以登录对象权限控制用户对数据库对象的操作权限行级别安全通过行级别安全策略限制用户对特定行数据的访问加密加密用于保护数据库中的敏感数据防止未经授权的访问提供了多种加密技术包括列级加密对特定列的数据进行加密确保只有授权用户可以解密透明数据加密对整个数据库进行加密数据在磁盘上存储时是加密的只有在内存中解密后才能访问审计审计用于跟踪和记录数据库操作以便监视对数据库的访问并检测潜在的安全问题提供了内置的审计功能可以记录登录事件权限更改数据修改等操作数据库安全策略数据库安全策略定义了数据库中敏感数据的保护规则和标准这些策略可以包括密码策略访问限制数据分类等帮助组织确保符合法规和标准要求数据库安全架构是一个综合的安全系统需要综合考虑各个方面来确保数据库的安全性和完整性通过合理配置和管理可以有效地保护数据库免受未经授权的访问和恶意攻击',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-05-09 18:56:22',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="http://chun-huang.top/wp-content/uploads/2024/03/1711095406-u1644142392678189819fm253fmtautoapp138fJPEG.webp"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://github.com/beginner-Chun/beginner-Chun.github.io" title="GitHub"><img class="back-menu-item-icon" src="/img/favicon.ico" alt="GitHub"/><span class="back-menu-item-text">GitHub</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="http://chun-huang.top/" title="个人网站"><img class="back-menu-item-icon" src="https://image.anheyu.com/favicon.ico" alt="个人网站"/><span class="back-menu-item-text">个人网站</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">ifChun</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=1708664797&amp;server=tencent"><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 偏爱诗歌集录</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src="/null"/></a><div class="post-qr-code-desc"></div></li><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src="/null"/></a><div class="post-qr-code-desc"></div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Ajax/" style="font-size: 1.05rem;">Ajax<sup>1</sup></a><a href="/tags/CSS/" style="font-size: 1.05rem;">CSS<sup>1</sup></a><a href="/tags/JavaScript/" style="font-size: 1.05rem;">JavaScript<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 1.05rem;">MySQL<sup>1</sup></a><a href="/tags/Mybatis-Plus/" style="font-size: 1.05rem;">Mybatis-Plus<sup>1</sup></a><a href="/tags/SQLserver/" style="font-size: 1.05rem;">SQLserver<sup>1</sup></a><a href="/tags/SSM/" style="font-size: 1.05rem;">SSM<sup>1</sup></a><a href="/tags/SpringBoot/" style="font-size: 1.05rem;">SpringBoot<sup>1</sup></a><a href="/tags/SpringSecurity/" style="font-size: 1.05rem;">SpringSecurity<sup>1</sup></a><a href="/tags/TypeScript/" style="font-size: 1.05rem;">TypeScript<sup>1</sup></a><a href="/tags/docker-%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 1.05rem;">docker, 微服务<sup>1</sup></a><a href="/tags/html/" style="font-size: 1.05rem;">html<sup>1</sup></a><a href="/tags/redis/" style="font-size: 1.05rem;">redis<sup>2</sup></a><a href="/tags/vue/" style="font-size: 1.05rem;">vue<sup>1</sup></a><a href="/tags/webpack/" style="font-size: 1.05rem;">webpack<sup>1</sup></a><a href="/tags/%E6%96%87%E8%A8%80%E6%96%87/" style="font-size: 1.05rem;">文言文<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/05/"><span class="card-archive-list-date">五月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">18</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url">数据库</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/SQLserver/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>SQLserver</span></a></span></div></div><h1 class="post-title" itemprop="name headline">SQLserver基础篇</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-05-09T10:53:40.000Z" title="发表于 2024-05-09 18:53:40">2024-05-09</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-05-09T10:56:22.169Z" title="更新于 2024-05-09 18:56:22">2024-05-09</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">5.8k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>19分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="SQLserver基础篇"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为广西"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>广西</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/e68192338c9fc0a8b09180d0453c6389.jpg"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://www.dachun.icu/2024/05/09/SQLserver%E5%9F%BA%E7%A1%80%E7%AF%87/"><header><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url">数据库</a><a href="/tags/SQLserver/" tabindex="-1" itemprop="url">SQLserver</a><h1 id="CrawlerTitle" itemprop="name headline">SQLserver基础篇</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Huang_Chun</span><time itemprop="dateCreated datePublished" datetime="2024-05-09T10:53:40.000Z" title="发表于 2024-05-09 18:53:40">2024-05-09</time><time itemprop="dateCreated datePublished" datetime="2024-05-09T10:56:22.169Z" title="更新于 2024-05-09 18:56:22">2024-05-09</time></header><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/e68192338c9fc0a8b09180d0453c6389.jpg" alt="e68192338c9fc0a8b09180d0453c6389"></p>
+<h2 id="SQL-Server-编程语法"><a href="#SQL-Server-编程语法" class="headerlink" title="SQL Server 编程语法"></a>SQL Server 编程语法</h2><h3 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h3><blockquote>
+<ol>
+<li><p>声明: declare @局部变量名 数据类型；</p>
+<ol>
+<li><pre><code class="sql">declare @var1 int， @var2 datetime；
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2. 赋值</span><br><span class="line"></span><br><span class="line">   1. ```sql</span><br><span class="line">      set @变量名 = 表达式；</span><br><span class="line">      </span><br><span class="line">      select @变量名 = 表达式；</span><br><span class="line">      </span><br><span class="line">      select @变量1 = 表达式或列名[  @变量2 = 表达式或列名 ] from 表名 where 条件表达式</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<h3 id="显示信息"><a href="#显示信息" class="headerlink" title="显示信息"></a>显示信息</h3><blockquote>
+<ol>
+<li><p>print语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print @变量名 <span class="comment">-- 文本形式显示</span></span><br><span class="line">print <span class="string">&#x27;hello, world&#x27;</span></span><br><span class="line"><span class="keyword">select</span> @变量名 <span class="comment">-- 表格形式显示</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>raiserror语句</p>
+<ol>
+<li><p>用于SQL Server返回错误信息的同时，返回用户指定的信息，设置了一个系统标记，记录产生的错误。</p>
+</li>
+<li><pre><code class="sql">raiserror (&lt;错误号&gt; | &quot;错误信息&quot;，[严重度])
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 批处理</span><br><span class="line"></span><br><span class="line">1. 批处理是成组执行的一条或多条SQL指令，被作为整体进行语法分析，优化，编译，和执行。</span><br><span class="line">2. go语句用于指定批处理语句的==结束处==，单独占用一行。</span><br><span class="line"></span><br><span class="line">### 流程控制语句</span><br><span class="line"></span><br><span class="line">#### **begin...end语句**</span><br><span class="line"></span><br><span class="line">将多条SQL语句封装起来，形成一个语句块，使这些语句作为一个整体执行</span><br><span class="line"></span><br><span class="line">1. ```sql</span><br><span class="line">   begin</span><br><span class="line">   	语句...</span><br><span class="line">   end</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<h4 id="if…else"><a href="#if…else" class="headerlink" title="if…else"></a><strong>if…else</strong></h4><blockquote>
+<ol>
+<li><p>判断语句</p>
+</li>
+<li><pre><code class="sql">if 条件表达式
+    语句
+else if 条件表达式
+    语句
+else
+    语句
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. if语句用与关键字`exists`结合使用，用于检测是否存在满足条件的记录，只要检测到一条记录存在返回`真`</span><br><span class="line"></span><br><span class="line">#### **while循环语句**</span><br><span class="line"></span><br><span class="line">1. 设置一个反复执行语句块，直到条件不满足为止</span><br><span class="line"></span><br><span class="line">2. ```sql</span><br><span class="line">   while 逻辑表达式</span><br><span class="line">   	语句</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>与break,continue语句结合使用</p>
+</li>
+</ol>
+</blockquote>
+<h4 id="goto语句"><a href="#goto语句" class="headerlink" title="goto语句"></a><strong>goto语句</strong></h4><blockquote>
+<ol>
+<li><p>使用goto语句可以使SQL语句的执行无条件地转移到指定的标号位置</p>
+</li>
+<li><pre><code class="sql">goto lable
+    ...
+lable
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. 常用于while和if语句中，以跳出循环和分支处理</span><br><span class="line"></span><br><span class="line">#### **waitfor语句**</span><br><span class="line"></span><br><span class="line">1. 可以在某一个时刻或某一个时间间隔之后执行SQL语句，语句块，存储过程等</span><br><span class="line"></span><br><span class="line">2. ```sql</span><br><span class="line">   waitfor delay &#x27;时间&#x27; SQL语句 -- 在某一个时间间隔之后执行SQL语句</span><br><span class="line">   waitfro time &#x27;时间&#x27;  SQL语句 -- 某一个时刻之后执行SQL语句</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>时间参数的数据类型为datetime，但不带日期，格式为”hh:mm:ss”</p>
+</li>
+</ol>
+</blockquote>
+<h4 id="case语句"><a href="#case语句" class="headerlink" title="case语句"></a><strong>case语句</strong></h4><blockquote>
+<ol>
+<li><p>case语句用于根据多个分支条件确定执行内容。case语句列出一个或多个分支条件，并对每个分支条件给出候选值。</p>
+</li>
+<li><pre><code class="sql">select warehouse = case warehouse 
+    when &#39;value1&#39; then &#39;北京&#39;
+    when &#39;value2&#39; then &#39;上海&#39;
+    when &#39;value3&#39; then &#39;广州&#39;
+    else &#39;未知&#39;
+end
+from tableName；
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### **return语句**</span><br><span class="line"></span><br><span class="line">1. 使查询或存储过程返回，使用return语句可以立即从当前程序结构中退出，并且return后面的语句不再执行</span><br><span class="line"></span><br><span class="line">2. ```sql</span><br><span class="line">   return 整形表达式</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>一般情况下，只有存储过程才会使用返回的整型结果，调用存储过程的 语句可以根据return语句返回的值判断下一步应该执行的操作。</p>
+</li>
+</ol>
+</blockquote>
+<h2 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h2><h3 id="定义视图"><a href="#定义视图" class="headerlink" title="定义视图"></a>定义视图</h3><blockquote>
+<ol>
+<li><p>语法</p>
+</li>
+<li><pre><code class="sql">create view 视图名 [with encryption] as 
+子查询
+[with check option]
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. `with check option`:表示用视图进行update，insert，delete，select操作时要保证更新，插入，删除，查询的元组要满足视图定义中的谓语条件（即子查询的条件表达式）</span><br><span class="line"></span><br><span class="line">4. `with encryption`：表示对该视图加密</span><br><span class="line"></span><br><span class="line">5. 子查询可以是任意的select语句，但是不能含有order by子句。</span><br><span class="line"></span><br><span class="line">### 删除视图</span><br><span class="line"></span><br><span class="line">1. 语法</span><br><span class="line"></span><br><span class="line">2. ```sql</span><br><span class="line">   drop 视图名1，视图2...;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ol>
+</blockquote>
+<h3 id="查询视图"><a href="#查询视图" class="headerlink" title="查询视图"></a>查询视图</h3><blockquote>
+<ol>
+<li><p>视图在定义后，用户可以像查询基本表一样查询视图。</p>
+</li>
+<li><p>查看视图stuview1的<code>创建信息</code></p>
+</li>
+<li><pre><code class="sql">EXEC sp_help 视图名;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4. 查看视图的`定义脚本`</span><br><span class="line"></span><br><span class="line">5. ```sql</span><br><span class="line">   exec sp_helptext 视图名;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>查看<code>加密视图</code>的定义脚本</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">exec</span> sp_helptext 视图名</span><br></pre></td></tr></table></figure></li>
+</ol>
+</blockquote>
+<h3 id="更新视图"><a href="#更新视图" class="headerlink" title="更新视图"></a>更新视图</h3><blockquote>
+<ol>
+<li><p>更新视图同更新基本表一样，更新视图最终是更新基表。</p>
+</li>
+<li><pre><code class="sql">update 视图名 set xxx = xxx where xxx;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. SQLserver中规定以下视图无法更新</span><br><span class="line"></span><br><span class="line">   1. 视图的字段来自聚合函数</span><br><span class="line">   2. 视图的定义时含有`group by` 子句</span><br><span class="line">   3. 视图在定义时含有`distinct`短语</span><br><span class="line">   4. 在一个不允许更新的视图上定义的视图也不允许更新。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 存储过程</span><br><span class="line"></span><br><span class="line">1. 存储过程是存储在数据库服务器中的一组编译成单个执行计划的SQL语句。</span><br><span class="line">2. 存储过程在创建时被编译和优化，在调用一次后，相关信息就保存在内存中，下次调用直接执行。</span><br><span class="line">3. 好处</span><br><span class="line">   1. 运行效率高</span><br><span class="line">   2. 降低了客户机和服务器组件的通信量</span><br><span class="line">   3. 利于集中控制，和维护</span><br><span class="line"></span><br><span class="line">### 创建存储过程</span><br><span class="line"></span><br><span class="line">#### 简单存储过程的创建和执行</span><br><span class="line"></span><br><span class="line">1. 创建</span><br><span class="line"></span><br><span class="line">2. ```sql</span><br><span class="line">   create procedure 存储过程名 as</span><br><span class="line">   SQL语句 #增删改查</span><br><span class="line">   go #遇到go表示代码结束</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>执行</p>
+</li>
+<li><pre><code class="sql">exec 存储过程名
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 带输入参数的存储过程的创建和执行</span><br><span class="line"></span><br><span class="line">1. 创建</span><br><span class="line"></span><br><span class="line">2. ```sql</span><br><span class="line">   create procedure 存储过程名 @参数1 类型(varchar（10）) [= &#x27;xxx&#x27;]，@参数2 类型(int)[= 1] </span><br><span class="line">   [ with recompile,encryption]#可从编译和加密</span><br><span class="line">   as </span><br><span class="line">   SQL语句 </span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>执行</p>
+</li>
+<li><pre><code class="sql">execute 存储过程名 参数1值， 参数2值；
+execute 存储过程名 @参数1 = ‘xxx’,@参数2 = &#39;xxx&#39;;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 带输出参数的存储过程</span><br><span class="line"></span><br><span class="line">1. 创建</span><br><span class="line"></span><br><span class="line">2. ```sql</span><br><span class="line">   create procedure 存储过程名 @参数1 类型 output</span><br><span class="line">   as sql语句；</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>执行</p>
+</li>
+<li><pre><code class="sql">declare @变量名 类型
+execute 存储过程名 @变量名 output;
+print cast(@变量名 as varchar(20))；
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 修改和删除存储过程</span><br><span class="line"></span><br><span class="line">1. 修改</span><br><span class="line"></span><br><span class="line">2. ```sql</span><br><span class="line">   alter procedure 存储过程名 xxxx....</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>删除</p>
+</li>
+<li><pre><code class="sql">drop procedure 存储过程名
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 触发器</span><br><span class="line"></span><br><span class="line">### 基本概念</span><br><span class="line"></span><br><span class="line">1. 触发器是用户定义在关系表上的一类有事件驱动特殊过程，也是一种保存数据完整性的方法。触发器实际上是一类特殊的`存储过程`,其特殊性表现在一旦定义，无序用户调用，任何对表的操作都由服务器自动激活相应的触发器。</span><br><span class="line">2. 触发器的主要作用是实现主键和外键不能保证复杂的参照完整性和数据的一致性。</span><br><span class="line"></span><br><span class="line">### DML触发器的工作原理</span><br><span class="line"></span><br><span class="line">1. `inserted`表： 对insert操作来说，inserted表中存放的是`要插入的数据`；而对于update操作来说，inserted表中存放的是要`更新的记录`(即更新后的新值)；</span><br><span class="line">2. `deleted`表： 对delete操作来说，deleted表中存放的是被删除的记录；而对于update操作来书deleted表中存放的是更新前的记录(更新完毕后即被删除)</span><br><span class="line">3. DML触发器分为`after`触发器和`instead of`触发器</span><br><span class="line"></span><br><span class="line">### after触发器的工作原理</span><br><span class="line"></span><br><span class="line">AFTER 触发器是一种类型的触发器，它在触发事件（如INSERT、UPDATE 或 DELETE）之后执行。具体来说，AFTER 触发器会在主要操作完成后立即执行，即在数据已经被插入、更新或删除之后触发。</span><br><span class="line"></span><br><span class="line">工作原理如下：</span><br><span class="line"></span><br><span class="line">1. 当对表执行 INSERT、UPDATE 或 DELETE 操作时，这些操作会触发对应的 AFTER 触发器。</span><br><span class="line">2. 数据库引擎首先执行主要的数据操作，如将新记录插入到表中。</span><br><span class="line">3. 然后，数据库引擎会检查与该表相关的任何 AFTER 触发器，如果存在匹配的触发器，则执行触发器中定义的逻辑。</span><br><span class="line">4. 在触发器内部逻辑执行完毕后，主要的数据操作才算真正完成。</span><br><span class="line"></span><br><span class="line">总结起来，AFTER 触发器在主要数据操作完成后处理其他相关逻辑，允许开发者对操作结果进行进一步处理、记录日志或实施其他业务规则。使用 AFTER 触发器可以确保触发器中的逻辑不会影响主要数据操作的性能，并且可以有效地控制数据的变化过程。</span><br><span class="line"></span><br><span class="line">### instead of触发器的工作原理</span><br><span class="line"></span><br><span class="line">INSTEAD OF 触发器是另一种类型的触发器，与 AFTER 触发器不同，它在触发事件之前执行。具体来说，INSTEAD OF 触发器会在主要操作执行之前替代原始操作，允许开发者自定义对数据的处理逻辑。</span><br><span class="line"></span><br><span class="line">工作原理如下：</span><br><span class="line"></span><br><span class="line">1. 当对表执行 INSERT、UPDATE 或 DELETE 操作时，这些操作会触发关联的 INSTEAD OF 触发器。</span><br><span class="line">2. 数据库引擎首先检查是否有相应的 INSTEAD OF 触发器，并在有触发器的情况下执行触发器中定义的逻辑。</span><br><span class="line">3. 在 INSTEAD OF 触发器内部逻辑中，开发者可以根据需求编写自定义的处理代码，例如拒绝操作、修改数据、调用其他存储过程等。</span><br><span class="line">4. 最终，数据库引擎将采取触发器内部逻辑所定义的行为，而不是直接执行原始的数据库操作。</span><br><span class="line"></span><br><span class="line">总结起来，INSTEAD OF 触发器提供了一种在数据操作执行之前干预和修改操作的机制。通过使用这种触发器，开发者可以控制数据库操作的行为，实现更灵活的数据处理和业务规则约束。</span><br><span class="line"></span><br><span class="line">### 创建触发器</span><br><span class="line"></span><br><span class="line">```sql</span><br><span class="line">CREATE TRIGGER trgExampleTrigger</span><br><span class="line">ON TableName</span><br><span class="line">AFTER INSERT, UPDATE, DELETE</span><br><span class="line">AS</span><br><span class="line">BEGIN</span><br><span class="line"> -- Trigger logic goes here</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ol>
+<ul>
+<li><code>CREATE TRIGGER</code>: 创建触发器的关键字，后面跟着触发器的名称。</li>
+<li><code>trgExampleTrigger</code>: 触发器的名称，在同一表上需要唯一。</li>
+<li><code>ON TableName</code>: 触发器所属的表名，指定触发器与哪个表相关联。</li>
+<li><code>AFTER INSERT, UPDATE, DELETE</code>: 触发器的类型和触发时机。在这个例子中，触发器被定义为在插入、更新或删除操���之后触发。可以根据需求选择其中一种或多种触发时机。</li>
+<li><code>AS</code>: 触发器逻辑的开始标记。</li>
+<li><code>BEGIN</code>: 触发器逻辑的起始点。</li>
+<li><code>END;</code>: 触发器逻辑的结束标记。</li>
+</ul>
+<p>在创建触发器时，需要指定触发器的名称、所属表、触发时机以及触发器内部的逻辑。触发器的逻辑部分可以包含对数据的处理、约束实施、日志记录等操作。触发器的作用是监听表上的指定事件，并在事件发生时执行特定的逻辑。</p>
+</blockquote>
+<h3 id="insert-update-delete触发器"><a href="#insert-update-delete触发器" class="headerlink" title="insert,update,delete触发器"></a>insert,update,delete触发器</h3><blockquote>
+<h5 id="INSERT-触发器"><a href="#INSERT-触发器" class="headerlink" title="INSERT 触发器"></a>INSERT 触发器</h5><p><strong>INSERT 触发器</strong>会在向表中插入新记录时触发。可以用于实现自动填充字段、数据验证等功能。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trgInsertExample</span><br><span class="line"><span class="keyword">ON</span> TableName</span><br><span class="line">AFTER <span class="keyword">INSERT</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"> <span class="comment">-- Trigger logic for INSERT goes here</span></span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="DELETE-触发器"><a href="#DELETE-触发器" class="headerlink" title="DELETE 触发器"></a>DELETE 触发器</h5><p><strong>DELETE 触发器</strong>会在从表中删除记录时触发。可以用于记录被删除的数据、级联删除相关数据等操作。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trgDeleteExample</span><br><span class="line"><span class="keyword">ON</span> TableName</span><br><span class="line">AFTER <span class="keyword">DELETE</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"> <span class="comment">-- Trigger logic for DELETE goes here</span></span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="UPDATE-触发器"><a href="#UPDATE-触发器" class="headerlink" title="UPDATE 触发器"></a>UPDATE 触发器</h5><p><strong>UPDATE 触发器</strong>会在更新表中的记录时触发。可以用于记录变更历史、检查数据一致性等功能。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trgUpdateExample</span><br><span class="line"><span class="keyword">ON</span> TableName</span><br><span class="line">AFTER <span class="keyword">UPDATE</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"> <span class="comment">-- Trigger logic for UPDATE goes here</span></span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在实际应用中，开发者可以根据需要编写逻辑来执行相应的操作。触发器能够为数据库操作提供灵活的扩展和控制机制，帮助确保数据的完整性和一致性。</p>
+</blockquote>
+<h3 id="INSTEAD-OF-触发器"><a href="#INSTEAD-OF-触发器" class="headerlink" title="INSTEAD OF 触发器"></a>INSTEAD OF 触发器</h3><blockquote>
+<p><strong>INSTEAD OF 触发器</strong>是一种特殊的触发器，它会在执行 INSERT、UPDATE 或 DELETE 操作之前触发。与 AFTER 触发器不同，INSTEAD OF 触发器可以用于在操作被执行之前干预和处理数据，而不是在操作完成后。</p>
+<p>INSTEAD OF 触发器通常用于对视图或具有特殊约束条件的表进行操作，以实现自定义的数据处理逻辑。</p>
+<p>以下是一个简单的 INSTEAD OF 触发器示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trgInsteadOfExample</span><br><span class="line"><span class="keyword">ON</span> ViewName</span><br><span class="line">INSTEAD <span class="keyword">OF</span> <span class="keyword">INSERT</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"> <span class="comment">-- Trigger logic for INSTEAD OF INSERT goes here</span></span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在上述代码中：</p>
+<ul>
+<li><code>CREATE TRIGGER</code>: 创建触发器的关键字。</li>
+<li><code>trgInsteadOfExample</code>: 触发器的名称。</li>
+<li><code>ON ViewName</code>: 触发器所属的视图名称。</li>
+<li><code>INSTEAD OF INSERT</code>: 触发器类型为 INSTEAD OF INSERT，表示在插入操作执行之前触发触发器。</li>
+<li><code>AS</code>: 触发器逻辑的开始标记。</li>
+<li><code>BEGIN</code>: 触发器逻辑的起始点。</li>
+<li><code>END;</code>: 触发器逻辑的结束标记。</li>
+</ul>
+<p>INSTEAD OF 触发器允许开发者在插入、更新或删除操作执行之前进行自定义处理，例如拒绝操作、修改数据、调用其他存储过程等。这些触发器提供了灵活的机制来实现复杂的业务逻辑和数据处理需求。</p>
+</blockquote>
+<h2 id="数据库的完整性"><a href="#数据库的完整性" class="headerlink" title="数据库的完整性"></a>数据库的完整性</h2><h3 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h3><blockquote>
+<ol>
+<li><p>约束通过限制列中的数据，行中的数据和表之间的数据来保证数据完整性</p>
+</li>
+<li><p>在表创建完成后再添加约束</p>
+</li>
+<li><pre><code class="sql">-- 添加主键约束
+alter table 表名 add constraint 约束名 primary key(列名)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4. ```sql</span><br><span class="line">   -- 添加用于自定义的check约束</span><br><span class="line">   alter table 表名 add constraint 约束名 check (表达式)</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><pre><code class="sql">-- 添加默认值约束
+alter table 表名 add constraint 约束名 default(值) for 列名
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">6. ```sql</span><br><span class="line">   -- 删除约束</span><br><span class="line">   alter table 表名 drop constraint 约束名</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><pre><code class="sql">-- 查看约束名
+select name ，type_desc from sys.objects where parent_object_id = object_id(&#39;表名&#39;)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 默认值</span><br><span class="line"></span><br><span class="line">1. 默认是一种数据库对象，可以绑定到表的一列或多列上，也可以绑定到用于自定义的数据类型上，其作用类似于default约束。</span><br><span class="line"></span><br><span class="line">2. 默认约束是create table 或alter table语句中定义后，被嵌入到定义的表结构中，也就是说，在删除表的时候默认约束也将随之被删除。</span><br><span class="line"></span><br><span class="line">3. ```sql</span><br><span class="line">   -- 创建默认</span><br><span class="line">   create default 默认对象名 as 常量表达式. </span><br><span class="line">   -- 常量表达式可以是常量，内置函数或数学表达式，表达式不能包含任何列名或其他数据库对象</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><pre><code class="sql">-- 绑定默认值
+sp_bindefault 默认对象名, &#39;objname&#39;;
+-- objname为指定要绑定的表和列或用户定义的数据类型。
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5. ```sql</span><br><span class="line">   -- 查看默认</span><br><span class="line">   exec sp_helptext 默认对象名;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><pre><code class="sql">-- 解除默认
+sp_unbindefault &#39;objname&#39;;
+-- 删除默认, 删除之前先解除默认，否则报错
+drop default 默认对象名;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 规则</span><br><span class="line"></span><br><span class="line">1. 规则是数据库对存储在表中的列或用户自定义数据类型中的值的规定和限制，时单独存储的独立的数据库对象。</span><br><span class="line"></span><br><span class="line">2. 规则与check约束的不同之处</span><br><span class="line"></span><br><span class="line">   1. check约束是在使用create table语句建表时指定的，而规则是独立于表的数据库对象，通过与指定表或数据类型来实现完整性约束</span><br><span class="line">   2. 在一列上只能使用一个规则，但可以使用多个check约束</span><br><span class="line">   3. 规则可以应用多个列还可以应用于用户自定义的数据类型，而check约束只能应用于他定义的列。</span><br><span class="line"></span><br><span class="line">3. 创建规则</span><br><span class="line"></span><br><span class="line">4. ```sql</span><br><span class="line">   create rules 规则名 as condition_expreession</span><br><span class="line">   # condition_expreession是规则的定义，他可以是用于where条件子句中任何表达式，以字符@开头</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>查看规则</p>
+</li>
+<li><pre><code class="sql">sp_help 规则名
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">7. 绑定和解除规则</span><br><span class="line"></span><br><span class="line">8. ```sql</span><br><span class="line">   # 绑定</span><br><span class="line">   sp_bindrule 规则名 绑定的对象名 [, 自定义类型]</span><br><span class="line">   # 解除</span><br><span class="line">   sp_unbindrlue 绑定的对象名 [, 自定义类型]</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>删除规则</p>
+</li>
+<li><pre><code class="sql">drop rule &#123;规则名&#125; [, ...n]
+# 在删除一个规则前必须先将其绑定的对象解除绑定。
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 索引</span><br><span class="line"></span><br><span class="line">1. 创建索引</span><br><span class="line"></span><br><span class="line">2. ```sql</span><br><span class="line">   create [unique, clustered, nonclustered] index 索引名 on 表名或视图名(列名)</span><br><span class="line">   # clustered： 聚集索引</span><br><span class="line">   # unique：唯一索引</span><br><span class="line">   # nonclustered： 非聚集索引</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>查看索引</p>
+</li>
+<li><pre><code class="sql">exec sp_helpindex 表名
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5. 删除索引</span><br><span class="line"></span><br><span class="line">6. ```sql</span><br><span class="line">   drop index 表名.索引名</span><br><span class="line">   # 删除多个索引，索引之间用逗号隔开</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li></li>
+</ol>
+</blockquote>
+<h2 id="数据库安全"><a href="#数据库安全" class="headerlink" title="数据库安全"></a>数据库安全</h2><h3 id="用户管理和角色管理"><a href="#用户管理和角色管理" class="headerlink" title="用户管理和角色管理"></a>用户管理和角色管理</h3><blockquote>
+<p>SQL Server 的数据库安全涉及用户管理和角色管理，这些是确保数据库安全性的重要组成部分。以下是 SQL Server 中用户管理和角色管理的详细说明：</p>
+<h4 id="用户管理："><a href="#用户管理：" class="headerlink" title="用户管理："></a>用户管理：</h4><ol>
+<li><strong>创建用户</strong>：创建用户以允许他们访问数据库。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建 Windows 身份验证用户</span></span><br><span class="line"><span class="keyword">CREATE</span> LOGIN [Domain\UserName] <span class="keyword">FROM</span> WINDOWS;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建 SQL Server 身份验证用户</span></span><br><span class="line"><span class="keyword">CREATE</span> LOGIN UserName <span class="keyword">WITH</span> PASSWORD <span class="operator">=</span> <span class="string">&#x27;StrongPassword&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>将用户分配给数据库</strong>：创建用户并将其分配给数据库。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 将 Windows 身份验证用户分配给数据库</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> UserName <span class="keyword">FOR</span> LOGIN [Domain\UserName];</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 将 SQL Server 身份验证用户分配给数据库</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> UserName <span class="keyword">FOR</span> LOGIN UserName;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>授权</strong>：授予用户对数据库对象的权限。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 授予用户权限</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span>, <span class="keyword">INSERT</span>, <span class="keyword">UPDATE</span>, <span class="keyword">DELETE</span> <span class="keyword">ON</span> TableName <span class="keyword">TO</span> UserName;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><strong>删除用户</strong>：在不需要用户访问数据库时，可以删除他们。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 删除用户</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">USER</span> UserName;</span><br></pre></td></tr></table></figure>
+
+<h4 id="角色管理："><a href="#角色管理：" class="headerlink" title="角色管理："></a>角色管理：</h4><ol>
+<li><strong>创建角色</strong>：创建角色以便将权限组织成逻辑单元。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建角色</span></span><br><span class="line"><span class="keyword">CREATE</span> ROLE RoleName;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>将用户添加到角色</strong>：将用户添加到角色以便批量管理权限。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 将用户添加到角色</span></span><br><span class="line"><span class="keyword">ALTER</span> ROLE RoleName <span class="keyword">ADD</span> <span class="keyword">MEMBER</span> UserName;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>授权</strong>：向角色授予对数据库对象的权限。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 授予权限给角色</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span>, <span class="keyword">INSERT</span>, <span class="keyword">UPDATE</span>, <span class="keyword">DELETE</span> <span class="keyword">ON</span> TableName <span class="keyword">TO</span> RoleName;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><strong>删除角色</strong>：在不再需要角色时，可以删除它们。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 删除角色</span></span><br><span class="line"><span class="keyword">DROP</span> ROLE RoleName;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="固定角色"><a href="#固定角色" class="headerlink" title="固定角色"></a>固定角色</h3><blockquote>
+<p>SQL Server 的数据库安全中，固定角色是预定义的角色，拥有特定的权限和功能，用于简化权限管理。以下是 SQL Server 中常见的固定角色及其说明：</p>
+<ol>
+<li><p><strong>sysadmin</strong>：sysadmin 角色是 SQL Server 中最高权限的角色，拥有对所有数据库的完全控制权限。成员可以执行任何操作，包括配置服务器和数据库引擎、管理用户权限以及维护数据库。</p>
+</li>
+<li><p><strong>serveradmin</strong>：serveradmin 角色允许成员配置服务器级别的设置，但不能访问或修改用户数据库。</p>
+</li>
+<li><p><strong>securityadmin</strong>：securityadmin 角色允许成员管理登录、服务器级别的安全性设置和配置审核。</p>
+</li>
+<li><p><strong>processadmin</strong>：processadmin 角色允许成员执行活动监视和进程监视任务。</p>
+</li>
+<li><p><strong>setupadmin</strong>：setupadmin 角色允许成员管理服务器上的 SQL Server 安装。</p>
+</li>
+<li><p><strong>bulkadmin</strong>：bulkadmin 角色允许成员运行 BULK INSERT 语句。</p>
+</li>
+<li><p><strong>diskadmin</strong>：diskadmin 角色允许成员管理磁盘文件。</p>
+</li>
+<li><p><strong>dbcreator</strong>：dbcreator 角色允许成员创建、更改、删除数据库。</p>
+</li>
+<li><p><strong>public</strong>：public 角色是每个数据库中的默认角色，所有用户都是其成员。它是其他角色的默认父级，所有用户在数据库中都具有 public 角色的权限。</p>
+</li>
+</ol>
+<p>这些固定角色在 SQL Server 中起着重要的作用，它们简化了权限管理并提供了一种安全的默认配置。根据需要，您可以将用户添加到这些角色中，以授予他们相应的权限。</p>
+</blockquote>
+<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><blockquote>
+<p>SQL Server 的数据库安全性通过权限管理来确保数据的安全性和完整性。以下是 SQL Server 中的权限管理详细说明：</p>
+<ol>
+<li><p><strong>权限类型</strong>：SQL Server 中有多种权限类型，包括但不限于 SELECT、INSERT、UPDATE、DELETE 等。每种权限类型都控制用户对数据库对象的不同操作。</p>
+</li>
+<li><p><strong>授权</strong>：授权是指授予用户或角色特定的权限，以允许他们执行特定的操作。</p>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 授予用户对表的 SELECT 权限</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> TableName <span class="keyword">TO</span> UserName;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 授予角色对表的 INSERT、UPDATE 权限</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">INSERT</span>, <span class="keyword">UPDATE</span> <span class="keyword">ON</span> TableName <span class="keyword">TO</span> RoleName;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>回收权限</strong>：当不再需要某个用户或角色拥有特定权限时，可以撤销授权。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 回收用户对表的 SELECT 权限</span></span><br><span class="line"><span class="keyword">REVOKE</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> TableName <span class="keyword">FROM</span> UserName;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 回收角色对表的 INSERT、UPDATE 权限</span></span><br><span class="line"><span class="keyword">REVOKE</span> <span class="keyword">INSERT</span>, <span class="keyword">UPDATE</span> <span class="keyword">ON</span> TableName <span class="keyword">FROM</span> RoleName;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><strong>权限检查</strong>：在执行敏感操作之前，可以使用权限检查来确保用户拥有执行该操作所需的权限。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 检查用户对表的 DELETE 权限</span></span><br><span class="line">IF HAS_PERMS_BY_NAME(<span class="string">&#x27;TableName&#x27;</span>, <span class="string">&#x27;OBJECT&#x27;</span>, <span class="string">&#x27;DELETE&#x27;</span>) <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="comment">-- 执行删除操作</span></span><br><span class="line">    <span class="keyword">DELETE</span> <span class="keyword">FROM</span> TableName <span class="keyword">WHERE</span> <span class="keyword">Condition</span>;</span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"><span class="keyword">ELSE</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    PRINT <span class="string">&#x27;您没有执行此操作的权限。&#x27;</span>;</span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><strong>视图权限</strong>：可以控制用户对视图的访问权限，以保护敏感数据。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建视图</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> ViewName <span class="keyword">AS</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> TableName <span class="keyword">WHERE</span> <span class="keyword">Condition</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 授予用户对视图的 SELECT 权限</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> ViewName <span class="keyword">TO</span> UserName;</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li><strong>存储过程权限</strong>：存储过程也可以拥有自己的权限，控制用户对其执行的访问。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建存储过程</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> ProcedureName <span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="comment">-- 存储过程逻辑</span></span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 授予用户对存储过程的 EXECUTE 权限</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">EXECUTE</span> <span class="keyword">ON</span> ProcedureName <span class="keyword">TO</span> UserName;</span><br></pre></td></tr></table></figure>
+
+<p>通过以上权限管理措施，可以精确地控制用户对数据库对象的访问和操作，从而提高数据库的安全性和完整性。</p>
+</blockquote>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><blockquote>
+<p>SQL Server 数据库安全的架构是一个综合性的系统，涵盖了多个方面，包括身份验证、授权、访问控制、加密和审计等。以下是 SQL Server 数据库安全架构的详细讲解：</p>
+<h4 id="1-身份验证（Authentication）："><a href="#1-身份验证（Authentication）：" class="headerlink" title="1. 身份验证（Authentication）："></a>1. 身份验证（Authentication）：</h4><p>在 SQL Server 中，有两种常见的身份验证方式：</p>
+<ul>
+<li><strong>Windows 身份验证</strong>：通过 Windows 操作系统认证用户的身份。</li>
+<li><strong>SQL Server 身份验证</strong>：用户需要提供 SQL Server 指定的用户名和密码来验证身份。</li>
+</ul>
+<h4 id="2-授权（Authorization）："><a href="#2-授权（Authorization）：" class="headerlink" title="2. 授权（Authorization）："></a>2. 授权（Authorization）：</h4><p>一旦用户成功登录，就需要授权来确定其对数据库对象的访问权限。授权通过角色、权限和权限层次结构来实现。</p>
+<ul>
+<li><strong>角色</strong>：角色是权限的集合，可以将用户分配到角色中，从而简化权限管理。</li>
+<li><strong>权限</strong>：权限确定了用户或角色可以执行的操作，如 SELECT、INSERT、UPDATE、DELETE 等。</li>
+<li><strong>权限层次结构</strong>：SQL Server 中存在数据库级别、模式级别和对象级别的权限控制，可以细化到单个对象。</li>
+</ul>
+<h4 id="3-访问控制（Access-Control）："><a href="#3-访问控制（Access-Control）：" class="headerlink" title="3. 访问控制（Access Control）："></a>3. 访问控制（Access Control）：</h4><p>访问控制确保只有经过授权的用户才能访问数据库对象。这包括：</p>
+<ul>
+<li><strong>登录控制</strong>：限制谁可以登录 SQL Server。</li>
+<li><strong>对象权限</strong>：控制用户对数据库对象的操作权限。</li>
+<li><strong>行级别安全</strong>：通过行级别安全策略，限制用户对特定行数据的访问。</li>
+</ul>
+<h4 id="4-加密（Encryption）："><a href="#4-加密（Encryption）：" class="headerlink" title="4. 加密（Encryption）："></a>4. 加密（Encryption）：</h4><p>加密用于保护数据库中的敏感数据，防止未经授权的访问。SQL Server 提供了多种加密技术，包括：</p>
+<ul>
+<li><strong>列级加密</strong>：对特定列的数据进行加密，确保只有授权用户可以解密。</li>
+<li><strong>透明数据加密（TDE）</strong>：对整个数据库进行加密，数据在磁盘上存储时是加密的，只有在内存中解密后才能访问。</li>
+</ul>
+<h4 id="5-审计（Auditing）："><a href="#5-审计（Auditing）：" class="headerlink" title="5. 审计（Auditing）："></a>5. 审计（Auditing）：</h4><p>审计用于跟踪和记录数据库操作，以便监视对数据库的访问并检测潜在的安全问题。SQL Server 提供了内置的审计功能，可以记录登录事件、权限更改、数据修改等操作。</p>
+<h4 id="6-数据库安全策略（Database-Security-Policy）："><a href="#6-数据库安全策略（Database-Security-Policy）：" class="headerlink" title="6. 数据库安全策略（Database Security Policy）："></a>6. 数据库安全策略（Database Security Policy）：</h4><p>数据库安全策略定义了数据库中敏感数据的保护规则和标准。这些策略可以包括密码策略、访问限制、数据分类等，帮助组织确保符合法规和标准要求。</p>
+<p>SQL Server 数据库安全架构是一个综合的安全系统，需要综合考虑各个方面来确保数据库的安全性和完整性。通过合理配置和管理，可以有效地保护数据库免受未经授权的访问和恶意攻击。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/1711095406-u1644142392678189819fm253fmtautoapp138fJPEG%20(1).webp" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/1711095406-u1644142392678189819fm253fmtautoapp138fJPEG%20(1).webp" title="头像" alt="头像"></a><div class="post-copyright__author_name">Huang_Chun</div><div class="post-copyright__author_desc">编程之路...</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="https://www.dachun.icu/2024/05/09/SQLserver%E5%9F%BA%E7%A1%80%E7%AF%87/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('https://www.dachun.icu/2024/05/09/SQLserver%E5%9F%BA%E7%A1%80%E7%AF%87/')">SQLserver基础篇</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/null"/></a><div class="post-qr-code-desc"></div></li><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/null"/></a><div class="post-qr-code-desc"></div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="https://www.dachun.icu/2024/05/09/SQLserver%E5%9F%BA%E7%A1%80%E7%AF%87/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=SQLserver基础篇&amp;url=https://www.dachun.icu/2024/05/09/SQLserver%E5%9F%BA%E7%A1%80%E7%AF%87/&amp;pic=https://chunimages.oss-cn-guangzhou.aliyuncs.com/e68192338c9fc0a8b09180d0453c6389.jpg" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.dachun.icu" target="_blank">ifChun</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__category-list"><a class="post-meta__box__categoryes" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>数据库<span class="categoryesPageCount">4</span></a></div><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/SQLserver/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>SQLserver<span class="tagsPageCount">1</span></a></div></div><div class="post_share"><div class="social-share" data-image="https://chunimages.oss-cn-guangzhou.aliyuncs.com/e68192338c9fc0a8b09180d0453c6389.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2024/05/09/MySQL%E5%9F%BA%E7%A1%80%E7%AF%87/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/2dc42d55705adecafceb5d9185d148df.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">MySQL基础篇</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/1711095406-u1644142392678189819fm253fmtautoapp138fJPEG%20(1).webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description">悟已往之不谏，知来者之可追。</div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(null) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL-Server-%E7%BC%96%E7%A8%8B%E8%AF%AD%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">SQL Server 编程语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="toc-number">1.1.</span> <span class="toc-text">局部变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E4%BF%A1%E6%81%AF"><span class="toc-number">1.2.</span> <span class="toc-text">显示信息</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#if%E2%80%A6else"><span class="toc-number">1.2.1.</span> <span class="toc-text">if…else</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#goto%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.2.2.</span> <span class="toc-text">goto语句</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#case%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.2.3.</span> <span class="toc-text">case语句</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E5%9B%BE"><span class="toc-number">2.</span> <span class="toc-text">视图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E8%A7%86%E5%9B%BE"><span class="toc-number">2.1.</span> <span class="toc-text">定义视图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E8%A7%86%E5%9B%BE"><span class="toc-number">2.2.</span> <span class="toc-text">查询视图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%A7%86%E5%9B%BE"><span class="toc-number">2.3.</span> <span class="toc-text">更新视图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#insert-update-delete%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">2.4.</span> <span class="toc-text">insert,update,delete触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#INSERT-%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">2.4.0.1.</span> <span class="toc-text">INSERT 触发器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DELETE-%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">2.4.0.2.</span> <span class="toc-text">DELETE 触发器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#UPDATE-%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">2.4.0.3.</span> <span class="toc-text">UPDATE 触发器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#INSTEAD-OF-%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">2.5.</span> <span class="toc-text">INSTEAD OF 触发器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">3.</span> <span class="toc-text">数据库的完整性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%A6%E6%9D%9F"><span class="toc-number">3.1.</span> <span class="toc-text">约束</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8"><span class="toc-number">4.</span> <span class="toc-text">数据库安全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E5%92%8C%E8%A7%92%E8%89%B2%E7%AE%A1%E7%90%86"><span class="toc-number">4.1.</span> <span class="toc-text">用户管理和角色管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%EF%BC%9A"><span class="toc-number">4.1.1.</span> <span class="toc-text">用户管理：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%92%E8%89%B2%E7%AE%A1%E7%90%86%EF%BC%9A"><span class="toc-number">4.1.2.</span> <span class="toc-text">角色管理：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BA%E5%AE%9A%E8%A7%92%E8%89%B2"><span class="toc-number">4.2.</span> <span class="toc-text">固定角色</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="toc-number">4.3.</span> <span class="toc-text">权限管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84"><span class="toc-number">4.4.</span> <span class="toc-text">架构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%EF%BC%88Authentication%EF%BC%89%EF%BC%9A"><span class="toc-number">4.4.1.</span> <span class="toc-text">1. 身份验证（Authentication）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%8E%88%E6%9D%83%EF%BC%88Authorization%EF%BC%89%EF%BC%9A"><span class="toc-number">4.4.2.</span> <span class="toc-text">2. 授权（Authorization）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%EF%BC%88Access-Control%EF%BC%89%EF%BC%9A"><span class="toc-number">4.4.3.</span> <span class="toc-text">3. 访问控制（Access Control）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E5%8A%A0%E5%AF%86%EF%BC%88Encryption%EF%BC%89%EF%BC%9A"><span class="toc-number">4.4.4.</span> <span class="toc-text">4. 加密（Encryption）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E5%AE%A1%E8%AE%A1%EF%BC%88Auditing%EF%BC%89%EF%BC%9A"><span class="toc-number">4.4.5.</span> <span class="toc-text">5. 审计（Auditing）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%EF%BC%88Database-Security-Policy%EF%BC%89%EF%BC%9A"><span class="toc-number">4.4.6.</span> <span class="toc-text">6. 数据库安全策略（Database Security Policy）：</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/05/09/SQLserver%E5%9F%BA%E7%A1%80%E7%AF%87/" title="SQLserver基础篇"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/e68192338c9fc0a8b09180d0453c6389.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SQLserver基础篇"/></a><div class="content"><a class="title" href="/2024/05/09/SQLserver%E5%9F%BA%E7%A1%80%E7%AF%87/" title="SQLserver基础篇">SQLserver基础篇</a><time datetime="2024-05-09T10:53:40.000Z" title="发表于 2024-05-09 18:53:40">2024-05-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/09/MySQL%E5%9F%BA%E7%A1%80%E7%AF%87/" title="MySQL基础篇"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/2dc42d55705adecafceb5d9185d148df.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MySQL基础篇"/></a><div class="content"><a class="title" href="/2024/05/09/MySQL%E5%9F%BA%E7%A1%80%E7%AF%87/" title="MySQL基础篇">MySQL基础篇</a><time datetime="2024-05-09T10:50:00.000Z" title="发表于 2024-05-09 18:50:00">2024-05-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/09/redis%E5%9F%BA%E7%A1%80%E7%AF%87/" title="redis基础篇"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://pic1.zhimg.com/v2-68ba5c63fb878f074c4ac91e944b24a4_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis基础篇"/></a><div class="content"><a class="title" href="/2024/05/09/redis%E5%9F%BA%E7%A1%80%E7%AF%87/" title="redis基础篇">redis基础篇</a><time datetime="2024-05-09T10:48:42.000Z" title="发表于 2024-05-09 18:48:42">2024-05-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/09/webpack/" title="webpack"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/8157688171e02899598695d16632cb9d.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="webpack"/></a><div class="content"><a class="title" href="/2024/05/09/webpack/" title="webpack">webpack</a><time datetime="2024-05-09T10:40:30.000Z" title="发表于 2024-05-09 18:40:30">2024-05-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/09/Vue2-Vue3/" title="Vue2+Vue3"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/9075d253970952d3b4572ea020ae90e0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Vue2+Vue3"/></a><div class="content"><a class="title" href="/2024/05/09/Vue2-Vue3/" title="Vue2+Vue3">Vue2+Vue3</a><time datetime="2024-05-09T10:35:42.000Z" title="发表于 2024-05-09 18:35:42">2024-05-09</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2024 By <a class="footer-bar-link" href="/" title="Huang_Chun" target="_blank">Huang_Chun</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a><a class="footer-bar-link cc" href="/copyright" title="cc协议"><i class="anzhiyufont anzhiyu-icon-copyright-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-by-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nc-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nd-line"></i></a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">4</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://github.com/beginner-Chun/beginner-Chun.github.io" title="GitHub"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="GitHub"/><span class="back-menu-item-text">GitHub</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="http://chun-huang.top/" title="个人网站"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="个人网站"/><span class="back-menu-item-text">个人网站</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=1708664797&amp;server=tencent"><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 偏爱诗歌集录</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Ajax/" style="font-size: 0.88rem;">Ajax<sup>1</sup></a><a href="/tags/CSS/" style="font-size: 0.88rem;">CSS<sup>1</sup></a><a href="/tags/JavaScript/" style="font-size: 0.88rem;">JavaScript<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem;">Linux<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 0.88rem;">MySQL<sup>1</sup></a><a href="/tags/Mybatis-Plus/" style="font-size: 0.88rem;">Mybatis-Plus<sup>1</sup></a><a href="/tags/SQLserver/" style="font-size: 0.88rem;">SQLserver<sup>1</sup></a><a href="/tags/SSM/" style="font-size: 0.88rem;">SSM<sup>1</sup></a><a href="/tags/SpringBoot/" style="font-size: 0.88rem;">SpringBoot<sup>1</sup></a><a href="/tags/SpringSecurity/" style="font-size: 0.88rem;">SpringSecurity<sup>1</sup></a><a href="/tags/TypeScript/" style="font-size: 0.88rem;">TypeScript<sup>1</sup></a><a href="/tags/docker-%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 0.88rem;">docker, 微服务<sup>1</sup></a><a href="/tags/html/" style="font-size: 0.88rem;">html<sup>1</sup></a><a href="/tags/redis/" style="font-size: 0.88rem;">redis<sup>2</sup></a><a href="/tags/vue/" style="font-size: 0.88rem;">vue<sup>1</sup></a><a href="/tags/webpack/" style="font-size: 0.88rem;">webpack<sup>1</sup></a><a href="/tags/%E6%96%87%E8%A8%80%E6%96%87/" style="font-size: 0.88rem;">文言文<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8671306203&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("2024年5月2日"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2020 By 安知鱼 V1.6.12",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 Huang_Chun 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script id="click-heart" src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
