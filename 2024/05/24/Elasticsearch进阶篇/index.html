@@ -1,0 +1,869 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>Elasticsearch进阶篇 | ifChun</title><meta name="keywords" content="Elasticsearch"><meta name="author" content="Huang_Chun"><meta name="copyright" content="Huang_Chun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#18171d"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="Elasticsearch进阶篇"><meta name="application-name" content="Elasticsearch进阶篇"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#18171d"><meta property="og:type" content="article"><meta property="og:title" content="Elasticsearch进阶篇"><meta property="og:url" content="https://www.dachun.icu/2024/05/24/Elasticsearch%E8%BF%9B%E9%98%B6%E7%AF%87/index.html"><meta property="og:site_name" content="ifChun"><meta property="og:description" content="在昨天的学习中，我们已经导入了大量数据到elasticsearch中，实现了商品数据的存储。不过查询商品数据时依然采用的是根据id查询，而非模糊搜索。 所以今天，我们来研究下elasticsearch的数据搜索功能。Elasticsearch提供了基于JSON的DSL（Domain Specifi"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://chunimages.oss-cn-guangzhou.aliyuncs.com/f39aee499e39f8993e46d41b461c05d9.jpeg"><meta property="article:author" content="Huang_Chun"><meta property="article:tag" content="java"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://chunimages.oss-cn-guangzhou.aliyuncs.com/f39aee499e39f8993e46d41b461c05d9.jpeg"><meta name="description" content="在昨天的学习中，我们已经导入了大量数据到elasticsearch中，实现了商品数据的存储。不过查询商品数据时依然采用的是根据id查询，而非模糊搜索。 所以今天，我们来研究下elasticsearch的数据搜索功能。Elasticsearch提供了基于JSON的DSL（Domain Specifi"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="https://www.dachun.icu/2024/05/24/Elasticsearch%E8%BF%9B%E9%98%B6%E7%AF%87/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: {"enable":true,"img":"https://upload-bbs.miyoushe.com/upload/2023/09/03/125766904/ee23df8517f3c3e3efc4145658269c06_5714860933110284659.png"},
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 你要不再看看？","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":true,"limitCount":50,"languages":{"author":"作者: Huang_Chun","link":"链接: ","source":"来源: ifChun","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'ifChun',
+  title: 'Elasticsearch进阶篇',
+  postAI: '',
+  pageFillDescription: 'DSL查询, 快速入门, 叶子查询, 全文检索查询, 精确查询, 复合查询, 算分函数查询（选讲）, bool查询, 排序, 分页, 基础分页, 深度分页, 高亮, 高亮原理, 实现高亮, 总结, RestClient查询, 快速入门, 发送请求, , 解析响应结果, 总结, 叶子查询, 复合查询, 排序和分页, 高亮, 数据聚合, DSL实现聚合, Bucket聚合, 带条件聚合, Metric聚合, 总结, RestClient实现聚合在昨天的学习中我们已经导入了大量数据到中实现了商品数据的存储不过查询商品数据时依然采用的是根据查询而非模糊搜索所以今天我们来研究下的数据搜索功能提供了基于的语句来定义查询条件其就是在组织条件因此我们先学习的查询语法然后再基于来对照学习就会事半功倍查询的查询可以分为两大类叶子查询一般是在特定的字段里查询特定值属于简单查询很少单独使用复合查询以逻辑方式组合多个叶子查询或者更改叶子查询的行为方式快速入门我们依然在的中学习查询的语法首先来看查询的语法结构索引库名查询类型查询条件说明索引库名其中的是固定路径不能修改例如我们以最简单的无条件查询为例无条件查询的类型是因此其查询语句如下由于无条件所以条件位置不写即可执行结果如下你会发现虽然是但是响应结果中并不会包含索引库中的所有文档而是仅有条这是因为处于安全考虑设置了默认的查询页数叶子查询叶子查询的类型也可以做进一步细分详情大家可以查看官方文档如图这里列举一些常见的例如全文检索查询利用分词器对用户输入搜索条件先分词得到词条然后再利用倒排索引搜索词条例如精确查询不对用户输入搜索条件分词根据字段内容精确值匹配但只能查找数值日期类型的字段例如地理坐标查询用于搜索地理位置搜索方式很多例如按矩形搜索按点和半径搜索略全文检索查询全文检索的种类也很多详情可以参考官方文档以全文检索中的为例语法如下索引库名字段名搜索条件示例与类似的还有区别在于可以同时对多个字段搜索而且多个字段都要满足语法示例索引库名搜索条件字段字段示例精确查询精确查询英文是顾名思义词条级别的查询也就是说不会对用户输入的搜索条件再分词而是作为一个词条与搜索的字段内容精确值匹配因此推荐查找数值日期类型的字段例如城市地名人名等等作为一个整体才有含义的字段详情可以查看官方文档以查询为例其语法如下索引库名字段名搜索条件示例当你输入的搜索条件不是词条而是短语时由于不做分词你反而搜索不到再来看下查询语法如下索引库名字段名最小值最大值是范围查询对于范围筛选的关键字有大于等于大于小于等于小于示例复合查询复合查询大致可以分为两类第一类基于逻辑运算组合叶子查询实现组合条件例如第二类基于某种算法修改查询时的文档相关性算分从而改变文档排名例如其它复合查询及相关语法可以参考官方文档算分函数查询选讲当我们利用查询时文档结果会根据与搜索词条的关联度打分返回结果时按照分值降序排列例如我们搜索手机结果如下从开始采用的相关性打分算法是算法公式如下基于这套公式就可以判断出某个文档与用户搜索的关键字之间的关联度还是比较准确的但是在实际业务需求中常常会有竞价排名的功能不是相关度越高排名越靠前而是掏的钱多的排名靠前例如在百度中搜索培训排名靠前的就是广告推广要想认为控制相关性算分就需要利用中的查询了基本语法查询中包含四部分内容原始查询条件部分基于这个条件搜索文档并且基于算法给文档打分原始算分过滤条件部分符合该条件的文档才会重新算分算分函数符合条件的文档要根据这个函数做运算得到的函数算分有四种函数函数结果是常量以文档中的某个字段值作为函数结果以随机数作为函数结果自定义算分函数算法运算模式算分函数的结果原始查询的相关性算分两者之间的运算方式包括相乘用替换其它例如的运行流程如下根据原始条件查询搜索文档并且计算相关性算分称为原始算分根据过滤条件过滤文档符合过滤条件的文档基于算分函数运算得到函数算分将原始算分和函数算分基于运算模式做运算得到最终结果作为相关性算分因此其中的关键点是过滤条件决定哪些文档的算分被修改算分函数决定函数算分的算法运算模式决定最终算分结果示例给这个品牌的手机算分提高十倍分析如下过滤条件品牌必须为算分函数常量值为算分模式相乘对应代码如下原始查询可以是任意条件算分函数满足的条件品牌必须是算分权重为加权模式求乘积查询查询即布尔查询就是利用逻辑运算来组合一个或多个查询子句的组合查询支持的逻辑运算有必须匹配每个子查询类似与选择性匹配子查询类似或必须不匹配不参与算分类似非必须匹配不参与算分查询的语法如下手机小米出于性能考虑与搜索关键字无关的查询尽量采用或逻辑运算避免参与相关性算分例如黑马商城的搜索页面其中输入框的搜索条件肯定要参与相关性算分可以采用但是价格范围过滤品牌过滤分类过滤等尽量采用不要参与相关性算分比如我们要搜索手机但品牌必须是华为价格必须是那么可以这样写手机华为排序默认是根据相关度算分来排序但是也支持自定义方式对搜索结果排序不过分词字段无法排序能参与排序字段类型有类型数值类型地理坐标类型日期类型等详细说明可以参考官方文档语法说明排序字段排序方式和示例我们按照商品价格排序分页默认情况下只返回的数据而如果要查询更多数据就需要修改分页参数了基础分页中通过修改参数来控制要返回的分页结果从第几个文档开始总共查询几个文档类似于中的官方文档如下语法如下分页开始的位置默认为每页文档数量默认深度分页的数据一般会采用分片存储也就是把一个索引中的数据分成份存储到不同节点上这种存储方式比较有利于数据扩展但给分页带来了一些麻烦比如一个索引库中有条数据分别存储到个分片每个分片条数据现在每页查询条查询第页那么分页查询的条件如下从第条开始查询每页查询条从语句来分析要查询第名的数据从实现思路来分析肯定是将所有数据排序找出前名截取其中的的部分但问题来了我们如何才能找到所有数据中的前名呢要知道每一片的数据都不一样第片上的第在另个节点上并不一定依然是名所以我们只能在每一个分片上都找出排名前的数据然后汇总到一起重新排序才能找出整个索引库中真正的前名此时截取的数据即可如图试想一下假如我们现在要查询的是第页数据呢是不是要找第的数据那岂不是需要把每个分片中的前名数据都查询出来汇总在一起在内存中排序如果查询的分页深度更深呢需要一次检索的数据岂不是更多由此可知当查询分页深度较大时汇总数据过多对内存和会产生非常大的压力因此会禁止超过的请求针对深度分页提供了两种解决方案分页时需要排序原理是从上一次的排序值开始查询下一页数据官方推荐使用的方式原理将排序后的文档形成快照保存下来基于快照做分页官方已经不推荐使用详情见文档总结大多数情况下我们采用普通分页就可以了查看百度京东等网站会发现其分页都有限制例如百度最多支持页每页不足条京东最多页每页最多条因此一般我们采用限制分页深度的方式即可无需实现深度分页高亮高亮原理什么是高亮显示呢我们在百度京东搜索时关键字会变成红色比较醒目这叫高亮显示观察页面源码你会发现两件事情高亮词条都被加了标签标签都添加了红色样式样式肯定是前端实现页面的时候写好的但是前端编写页面的时候是不知道页面要展示什么数据的不可能给数据加标签而服务端实现搜索功能要是有做分词搜索是知道哪些词条需要高亮的因此词条的高亮标签肯定是由服务端提供数据的时候已经加上的因此实现高亮的思路就是用户输入搜索关键字搜索数据服务端根据搜索关键字到搜索并给搜索结果中的关键字词条添加标签前端提前给约定好的标签添加样式实现高亮事实上已经提供了给搜索关键字加标签的语法无需我们自己编码基本语法如下索引库名搜索字段搜索关键字高亮字段名称注意搜索必须有查询条件而且是全文检索类型的查询条件例如参与高亮的字段必须是类型的字段默认情况下参与高亮的字段要与搜索字段一致除非添加示例总结查询的是一个大的对象包含下列属性查询条件和分页条件排序条件高亮条件示例查询文档的查询依然使用昨天学习的对象查询的基本步骤如下创建对象这次是搜索所以是准备请求参数也就是查询对应的参数发起请求解析响应响应结果相对复杂需要逐层解析快速入门之前说过由于对外暴露的接口都是风格的接口因此调用就是在发送请求而我们核心要做的就是利用利用代码组织请求参数解析响应结果这个参数的格式完全参考查询语句的结构因此我们在学习的过程中会不断的把与语句对比大家在学习记忆的过程中也应该这样对比学习发送请求首先以查询为例其和的对比如图代码解读第一步创建对象指定索引库名第二步利用构建中可以包含查询分页排序高亮等代表查询条件利用构建一个查询的第三步利用发送请求得到响应这里关键的有两个一个是它构建的就是中的完整参数其中包含了等所有功能另一个是其中包含了我们学习过的各种叶子查询复合查询等解析响应结果在发送请求以后得到了响应结果这个类的结构与我们在中看到的响应结果结构完全一致讲师赵云因此我们解析的代码就是在解析这个结果对比如下代码解读返回的结果是一个字符串结构包含命中的结果总条数其中的是具体的总条数值所有结果中得分最高的文档的相关性算分搜索结果的文档数组其中的每个文档都是一个对象文档中的原始数据也是对象因此我们解析响应结果就是逐层解析字符串流程如下通过获取就是中的最外层的代表命中的结果获取总条数信息获取数组也就是文档数组获取文档结果中的也就是原始的文档数据总结文档搜索的基本步骤是创建对象准备也就是来构建查询条件传入的方法发送请求得到结果解析结果参考结果从外到内逐层解析完整代码如下创建组织请求参数发送请求解析响应获取总条数共搜索到条数据遍历结果数组得到也就是原始文档反序列化并打印叶子查询所有的查询条件都是由来构建的叶子查询也不例外因此整套代码中变化的部分仅仅是条件构造的方式其它不动例如查询创建组织请求参数脱脂牛奶发送请求解析响应再比如查询创建组织请求参数脱脂牛奶发送请求解析响应还有查询创建组织请求参数发送请求解析响应还有查询创建组织请求参数华为发送请求解析响应复合查询复合查询也是由来构建我们以查询为例和的对比如图完整代码如下创建组织请求参数准备查询关键字搜索脱脂牛奶品牌过滤德亚价格过滤发送请求解析响应排序和分页之前说过就是整个请求参数所以排序分页都是基于这个来设置其和的对比如下完整示例代码创建组织请求参数搜索条件参数脱脂牛奶排序参数分页参数发送请求解析响应高亮高亮查询与前面的查询有两点不同条件同样是在中指定只不过高亮条件要基于来构造高亮响应结果与搜索的文档结果不在一起需要单独解析首先来看高亮条件构造其和的对比如图示例代码如下创建组织请求参数条件脱脂牛奶高亮条件发送请求解析响应再来看结果解析文档解析的部分不变主要是高亮内容需要单独解析出来其和的对比如图代码解读第步从结果中获取这部分是非高亮结果字符串还需要反序列为对象第步获取高亮结果返回值是一个是高亮字段名称值是对象代表高亮值第步从中根据高亮字段名称获取高亮字段值对象第步从中获取并且转为字符串这部分就是真正的高亮字符串了最后用高亮的结果替换中的非高亮结果完整代码如下获取总条数共搜索到条数据遍历结果数组得到也就是原始文档反序列化获取高亮结果有高亮结果获取的高亮结果获取第一个高亮结果片段就是商品名称的高亮值数据聚合聚合可以让我们极其方便的实现对数据的统计分析运算例如什么品牌的手机最受欢迎这些手机的平均价格最高价格最低价格这些手机每月的销售情况如何实现这些统计功能的比数据库的要方便的多而且查询速度非常快可以实现近实时搜索效果官方文档聚合常见的有三类桶聚合用来对文档做分组按照文档字段值分组例如按照品牌值分组按照国家分组按照日期阶梯分组例如一周为一组或者一月为一组度量聚合用以计算一些值比如最大值最小值平均值等求平均值求最大值求最小值同时求等管道聚合其它聚合的结果为基础做进一步运算注意参加聚合的字段必须是日期数值布尔类型实现聚合与之前的搜索功能类似我们依然先学习的语法再学习聚合例如我们要统计所有商品中共有哪些商品分类其实就是以分类字段对数据分组值一样的放在同一组属于聚合中的聚合基本语法如下语法说明设置为就是每页查条则结果中就不包含文档只包含聚合定义聚合聚合名称自定义但不能重复聚合的类型按分类聚合所以用参与聚合的字段名称希望返回的聚合结果的最大数量来看下查询的结果带条件聚合默认情况下聚合是对索引库的所有文档做聚合例如我们统计商品中所有的品牌结果如下可以看到统计出的品牌非常多但真实场景下用户会输入搜索条件因此聚合必须是对搜索结果聚合那么聚合必须添加限定条件例如我想知道价格高于元的手机品牌有哪些该怎么统计呢我们需要从需求中分析出搜索查询的条件和聚合的目标搜索查询条件价格高于必须是手机聚合目标统计的是品牌肯定是对字段做聚合语法如下手机聚合结果如下华为小米可以看到结果中只剩下个品牌了聚合上节课我们统计了价格高于的手机品牌形成了一个个桶现在我们需要对桶内的商品做运算获取每个品牌价格的最小值最大值平均值这就要用到聚合了例如聚合就可以同时获取等结果语法如下手机部分就不说了我们重点解读聚合部分语法可以看到我们在聚合的内部我们新加了一个参数这个聚合就是的子聚合会对形成的每个桶中的文档分别统计聚合名称聚合类型是聚合的一种聚合字段这里选择统计价格由于是对形成的每个品牌桶内文档分别做统计因此每个品牌都会统计出自己的价格最小最大平均值结果如下另外我们还可以让聚合按照每个品牌的价格平均值排序总结代表聚合与同级此时的作用是限定聚合的的文档范围聚合必须的三要素聚合名称聚合类型聚合字段聚合可配置属性有指定聚合结果数量指定聚合结果排序方式指定聚合字段实现聚合可以看到在中聚合条件与条件是同一级别都属于查询参数因此依然是利用方法来设置不过聚合条件的要利用这个工具类来构造与的语法对比如下聚合结果与搜索文档同一级别因此需要单独获取和解析具体解析语法如下完整代码如下创建准备请求参数手机聚合参数发送请求解析聚合结果获取品牌聚合获取聚合中的桶遍历桶内数据获取桶内',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-05-24 16:10:27',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/1711095406-u1644142392678189819fm253fmtautoapp138fJPEG.webp"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://github.com/beginner-Chun" title="GitHub"><img class="back-menu-item-icon" src="/img/favicon.ico" alt="GitHub"/><span class="back-menu-item-text">GitHub</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="http://chun-huang.top/" title="个人网站"><img class="back-menu-item-icon" src="https://image.anheyu.com/favicon.ico" alt="个人网站"/><span class="back-menu-item-text">个人网站</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">ifChun</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=1708664797&amp;server=tencent"><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 偏爱诗歌集录</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src="/null"/></a><div class="post-qr-code-desc"></div></li><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src="/null"/></a><div class="post-qr-code-desc"></div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Ajax/" style="font-size: 1.05rem; color: rgb(102, 132, 142);">Ajax<sup>1</sup></a><a href="/tags/CSS/" style="font-size: 1.05rem; color: rgb(90, 14, 20);">CSS<sup>1</sup></a><a href="/tags/ES/" style="font-size: 1.05rem; color: rgb(115, 62, 155);">ES<sup>2</sup></a><a href="/tags/JavaScript/" style="font-size: 1.05rem; color: rgb(127, 29, 125);">JavaScript<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem; color: rgb(52, 21, 90);">Linux<sup>1</sup></a><a href="/tags/MarkDown/" style="font-size: 1.05rem; color: rgb(114, 86, 170);">MarkDown<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 1.05rem; color: rgb(140, 51, 155);">MySQL<sup>1</sup></a><a href="/tags/Mybatis/" style="font-size: 1.05rem; color: rgb(85, 114, 62);">Mybatis<sup>1</sup></a><a href="/tags/Mybatis-Plus/" style="font-size: 1.05rem; color: rgb(141, 152, 122);">Mybatis-Plus<sup>1</sup></a><a href="/tags/RabbitMQ/" style="font-size: 1.05rem; color: rgb(50, 189, 109);">RabbitMQ<sup>2</sup></a><a href="/tags/SQLserver/" style="font-size: 1.05rem; color: rgb(74, 65, 34);">SQLserver<sup>1</sup></a><a href="/tags/SSM/" style="font-size: 1.05rem; color: rgb(64, 189, 86);">SSM<sup>1</sup></a><a href="/tags/SpringAi/" style="font-size: 1.05rem; color: rgb(46, 131, 140);">SpringAi<sup>1</sup></a><a href="/tags/SpringBoot/" style="font-size: 1.05rem; color: rgb(165, 22, 44); font-weight: 500; color: var(--anzhiyu-lighttext)">SpringBoot<sup>1</sup></a><a href="/tags/SpringCloud/" style="font-size: 1.05rem; color: rgb(114, 58, 97);">SpringCloud<sup>1</sup></a><a href="/tags/SpringSecurity/" style="font-size: 1.05rem; color: rgb(180, 148, 132);">SpringSecurity<sup>1</sup></a><a href="/tags/TypeScript/" style="font-size: 1.05rem; color: rgb(181, 59, 84);">TypeScript<sup>1</sup></a><a href="/tags/docker-%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 1.05rem; color: rgb(46, 84, 11);">docker, 微服务<sup>1</sup></a><a href="/tags/git/" style="font-size: 1.05rem; color: rgb(184, 143, 187);">git<sup>1</sup></a><a href="/tags/html/" style="font-size: 1.05rem; color: rgb(75, 129, 166);">html<sup>1</sup></a><a href="/tags/redis/" style="font-size: 1.05rem; color: rgb(163, 156, 56); font-weight: 500; color: var(--anzhiyu-lighttext)">redis<sup>2</sup></a><a href="/tags/vue/" style="font-size: 1.05rem; color: rgb(49, 164, 48);">vue<sup>1</sup></a><a href="/tags/webpack/" style="font-size: 1.05rem; color: rgb(185, 63, 141);">webpack<sup>1</sup></a><a href="/tags/%E6%96%87%E8%A8%80%E6%96%87/" style="font-size: 1.05rem; color: rgb(20, 7, 184);">文言文<sup>1</sup></a><a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 1.05rem; color: rgb(189, 171, 92);">日志<sup>3</sup></a><a href="/tags/%E7%95%99%E5%80%99%E4%BC%A0/" style="font-size: 1.05rem; color: rgb(48, 112, 183);">留候传<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/05/"><span class="card-archive-list-date">五月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">31</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/" itemprop="url">Java</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/ES/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>ES</span></a></span></div></div><h1 class="post-title" itemprop="name headline">Elasticsearch进阶篇</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-05-24T08:05:01.000Z" title="发表于 2024-05-24 16:05:01">2024-05-24</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-05-24T08:10:27.144Z" title="更新于 2024-05-24 16:10:27">2024-05-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">7.5k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>28分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="Elasticsearch进阶篇"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为广西"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>广西</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/df3321df4258fe27410643dd25c2f896.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://www.dachun.icu/2024/05/24/Elasticsearch%E8%BF%9B%E9%98%B6%E7%AF%87/"><header><a class="post-meta-categories" href="/categories/Java/" itemprop="url">Java</a><a href="/tags/ES/" tabindex="-1" itemprop="url">ES</a><h1 id="CrawlerTitle" itemprop="name headline">Elasticsearch进阶篇</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Huang_Chun</span><time itemprop="dateCreated datePublished" datetime="2024-05-24T08:05:01.000Z" title="发表于 2024-05-24 16:05:01">2024-05-24</time><time itemprop="dateCreated datePublished" datetime="2024-05-24T08:10:27.144Z" title="更新于 2024-05-24 16:10:27">2024-05-24</time></header><blockquote>
+<p>在昨天的学习中，我们已经导入了大量数据到elasticsearch中，实现了商品数据的存储。不过查询商品数据时依然采用的是根据id查询，而非模糊搜索。</p>
+<p>所以今天，我们来研究下elasticsearch的数据搜索功能。Elasticsearch提供了基于JSON的DSL（<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.12/query-dsl.html">Domain Specific Language</a>）语句来定义查询条件，其JavaAPI就是在组织DSL条件。</p>
+<p>因此，我们先学习DSL的查询语法，然后再基于DSL来对照学习JavaAPI，就会事半功倍。</p>
+</blockquote>
+<h2 id="DSL查询"><a href="#DSL查询" class="headerlink" title="DSL查询"></a>DSL查询</h2><blockquote>
+<p>Elasticsearch的查询可以分为两大类：</p>
+<ul>
+<li>叶子查询（Leaf query clauses）：一般是在特定的字段里查询特定值，属于简单查询，很少单独使用。</li>
+<li>复合查询（Compound query clauses）：以逻辑方式组合多个叶子查询或者更改叶子查询的行为方式。</li>
+</ul>
+</blockquote>
+<h3 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h3><blockquote>
+<p>我们依然在Kibana的DevTools中学习查询的DSL语法。首先来看查询的语法结构：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引库名<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"> <span class="attr">&quot;查询类型&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="comment">// .. 查询条件</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li><code>GET /&#123;索引库名&#125;/_search</code>：其中的<code>_search</code>是固定路径，不能修改</li>
+</ul>
+<p>例如，我们以最简单的无条件查询为例，无条件查询的类型是：match_all，因此其查询语句如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /items/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;match_all&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>由于match_all无条件，所以条件位置不写即可。</p>
+<p>执行结果如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155716016.png" alt="image-20240524155716016"></p>
+<p>你会发现虽然是match_all，但是响应结果中并不会包含索引库中的所有文档，而是仅有10条。这是因为处于安全考虑，elasticsearch设置了默认的查询页数。</p>
+</blockquote>
+<h3 id="叶子查询"><a href="#叶子查询" class="headerlink" title="叶子查询"></a>叶子查询</h3><blockquote>
+<p>叶子查询的类型也可以做进一步细分，详情大家可以查看官方文档：</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.12/query-dsl.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.12/query-dsl.html</a></p>
+<p>如图：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155725499.png" alt="image-20240524155725499"></p>
+<p>这里列举一些常见的，例如：</p>
+<ul>
+<li>全文检索查询（Full Text Queries）：利用分词器对用户输入搜索条件先分词，得到词条，然后再利用倒排索引搜索词条。例如：<ul>
+<li><code>match</code>：</li>
+<li><code>multi_match</code></li>
+</ul>
+</li>
+<li>精确查询（Term-level queries）：不对用户输入搜索条件分词，根据字段内容精确值匹配。但只能查找keyword、数值、日期、boolean类型的字段。例如：<ul>
+<li><code>ids</code></li>
+<li><code>term</code></li>
+<li><code>range</code></li>
+</ul>
+</li>
+<li>地理坐标查询：用于搜索地理位置，搜索方式很多，例如：<ul>
+<li><code>geo_bounding_box</code>：按矩形搜索</li>
+<li><code>geo_distance</code>：按点和半径搜索</li>
+</ul>
+</li>
+<li>…略</li>
+</ul>
+</blockquote>
+<h4 id="全文检索查询"><a href="#全文检索查询" class="headerlink" title="全文检索查询"></a>全文检索查询</h4><blockquote>
+<p>全文检索的种类也很多，详情可以参考官方文档：</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.12/full-text-queries.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.12/full-text-queries.html</a></p>
+<p>以全文检索中的<code>match</code>为例，语法如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引库名<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"> <span class="attr">&quot;match&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;字段名&quot;</span><span class="punctuation">:</span> <span class="string">&quot;搜索条件&quot;</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155738398.png" alt="image-20240524155738398"></p>
+<p>与<code>match</code>类似的还有<code>multi_match</code>，区别在于可以同时对多个字段搜索，而且多个字段都要满足，语法示例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引库名<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"> <span class="attr">&quot;multi_match&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;搜索条件&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;fields&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;字段1&quot;</span><span class="punctuation">,</span> <span class="string">&quot;字段2&quot;</span><span class="punctuation">]</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155747868.png" alt="image-20240524155747868"></p>
+</blockquote>
+<h4 id="精确查询"><a href="#精确查询" class="headerlink" title="精确查询"></a>精确查询</h4><blockquote>
+<p>精确查询，英文是<code>Term-level query</code>，顾名思义，词条级别的查询。也就是说不会对用户输入的搜索条件再分词，而是作为一个词条，与搜索的字段内容精确值匹配。因此推荐查找<code>keyword</code>、数值、日期、<code>boolean</code>类型的字段。例如：</p>
+<ul>
+<li>id</li>
+<li>price</li>
+<li>城市</li>
+<li>地名</li>
+<li>人名</li>
+</ul>
+<p>等等，作为一个整体才有含义的字段。</p>
+<p>详情可以查看官方文档：</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.12/term-level-queries.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.12/term-level-queries.html</a></p>
+<p>以<code>term</code>查询为例，其语法如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引库名<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;字段名&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;搜索条件&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155758248.png" alt="image-20240524155758248"></p>
+<p>当你输入的搜索条件不是词条，而是短语时，由于不做分词，你反而搜索不到：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155808561.png" alt="image-20240524155808561"></p>
+<p>再来看下<code>range</code>查询，语法如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引库名<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;range&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;字段名&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;gte&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>最小值<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;lte&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>最大值<span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>range</code>是范围查询，对于范围筛选的关键字有：</p>
+<ul>
+<li><code>gte</code>：大于等于</li>
+<li><code>gt</code>：大于</li>
+<li><code>lte</code>：小于等于</li>
+<li><code>lt</code>：小于</li>
+</ul>
+<p>示例：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155819543.png" alt="image-20240524155819543"></p>
+</blockquote>
+<h3 id="复合查询"><a href="#复合查询" class="headerlink" title="复合查询"></a>复合查询</h3><blockquote>
+<p>复合查询大致可以分为两类：</p>
+<ul>
+<li>第一类：基于逻辑运算组合叶子查询，实现组合条件，例如<ul>
+<li>bool</li>
+</ul>
+</li>
+<li>第二类：基于某种算法修改查询时的文档相关性算分，从而改变文档排名。例如：<ul>
+<li>function_score</li>
+<li>dis_max</li>
+</ul>
+</li>
+</ul>
+<p>其它复合查询及相关语法可以参考官方文档：</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.12/compound-queries.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.12/compound-queries.html</a></p>
+</blockquote>
+<h4 id="算分函数查询（选讲）"><a href="#算分函数查询（选讲）" class="headerlink" title="算分函数查询（选讲）"></a>算分函数查询（选讲）</h4><blockquote>
+<p>当我们利用match查询时，文档结果会根据与搜索词条的关联度打分（_score），返回结果时按照分值降序排列。</p>
+<p>例如，我们搜索 “手机”，结果如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155828871.png" alt="image-20240524155828871"></p>
+<p>从elasticsearch5.1开始，采用的相关性打分算法是BM25算法，公式如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155844723.png" alt="image-20240524155844723"></p>
+<p>基于这套公式，就可以判断出某个文档与用户搜索的关键字之间的关联度，还是比较准确的。但是，在实际业务需求中，常常会有竞价排名的功能。不是相关度越高排名越靠前，而是掏的钱多的排名靠前。</p>
+<p>例如在百度中搜索Java培训，排名靠前的就是广告推广：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://b11et3un53m.feishu.cn/s![image-20240524155852956](https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155852956.png" alt="img"></p>
+<p>要想认为控制相关性算分，就需要利用elasticsearch中的function score 查询了。</p>
+<p>基本语法：</p>
+<p>function score 查询中包含四部分内容：</p>
+<ul>
+<li>原始查询条件：query部分，基于这个条件搜索文档，并且基于BM25算法给文档打分，原始算分（query score)</li>
+<li>过滤条件：filter部分，符合该条件的文档才会重新算分</li>
+<li>算分函数：符合filter条件的文档要根据这个函数做运算，得到的函数算分（function score），有四种函数 <ul>
+<li>weight：函数结果是常量</li>
+<li>field_value_factor：以文档中的某个字段值作为函数结果</li>
+<li>random_score：以随机数作为函数结果</li>
+<li>script_score：自定义算分函数算法</li>
+</ul>
+</li>
+<li>运算模式：算分函数的结果、原始查询的相关性算分，两者之间的运算方式，包括： <ul>
+<li>multiply：相乘</li>
+<li>replace：用function score替换query score</li>
+<li>其它，例如：sum、avg、max、min</li>
+</ul>
+</li>
+</ul>
+<p>function score的运行流程如下：</p>
+<ul>
+<li>1）根据原始条件查询搜索文档，并且计算相关性算分，称为原始算分（query score）</li>
+<li>2）根据过滤条件，过滤文档</li>
+<li>3）符合过滤条件的文档，基于算分函数运算，得到函数算分（function score）</li>
+<li>4）将原始算分（query score）和函数算分（function score）基于运算模式做运算，得到最终结果，作为相关性算分。</li>
+</ul>
+<p>因此，其中的关键点是：</p>
+<ul>
+<li>过滤条件：决定哪些文档的算分被修改</li>
+<li>算分函数：决定函数算分的算法</li>
+<li>运算模式：决定最终算分结果</li>
+</ul>
+<p>示例：给IPhone这个品牌的手机算分提高十倍，分析如下：</p>
+<ul>
+<li>过滤条件：品牌必须为IPhone</li>
+<li>算分函数：常量weight，值为10</li>
+<li>算分模式：相乘multiply</li>
+</ul>
+<p>对应代码如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">GET /hotel/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;function_score&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>  .... <span class="punctuation">&#125;</span><span class="punctuation">,</span> <span class="comment">// 原始查询，可以是任意条件</span></span><br><span class="line">      <span class="attr">&quot;functions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="comment">// 算分函数</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;filter&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="comment">// 满足的条件，品牌必须是Iphone</span></span><br><span class="line">            <span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;brand&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Iphone&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;weight&quot;</span><span class="punctuation">:</span> <span class="number">10</span> <span class="comment">// 算分权重为2</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;boost_mode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;multipy&quot;</span> <span class="comment">// 加权模式，求乘积</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="bool查询"><a href="#bool查询" class="headerlink" title="bool查询"></a>bool查询</h4><blockquote>
+<p>bool查询，即布尔查询。就是利用逻辑运算来组合一个或多个查询子句的组合。bool查询支持的逻辑运算有：</p>
+<ul>
+<li>must：必须匹配每个子查询，类似“与”</li>
+<li>should：选择性匹配子查询，类似“或”</li>
+<li>must_not：必须不匹配，不参与算分，类似“非”</li>
+<li>filter：必须匹配，不参与算分</li>
+</ul>
+<p>bool查询的语法如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">GET /items/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;bool&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;must&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;match&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;手机&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;should&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;brand&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vivo&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;brand&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;小米&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;must_not&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;range&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;price&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;gte&quot;</span><span class="punctuation">:</span> <span class="number">2500</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;filter&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;range&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;price&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;lte&quot;</span><span class="punctuation">:</span> <span class="number">1000</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>出于性能考虑，与搜索关键字无关的查询尽量采用must_not或filter逻辑运算，避免参与相关性算分。</p>
+<p>例如黑马商城的搜索页面：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155910052.png" alt="image-20240524155910052"></p>
+<p>其中输入框的搜索条件肯定要参与相关性算分，可以采用match。但是价格范围过滤、品牌过滤、分类过滤等尽量采用filter，不要参与相关性算分。</p>
+<p>比如，我们要搜索<code>手机</code>，但品牌必须是<code>华为</code>，价格必须是<code>900~1599</code>，那么可以这样写：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">GET /items/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;bool&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;must&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;match&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;手机&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;filter&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;brand&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;华为&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;range&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;price&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;gte&quot;</span><span class="punctuation">:</span> <span class="number">90000</span><span class="punctuation">,</span> <span class="attr">&quot;lt&quot;</span><span class="punctuation">:</span> <span class="number">159900</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><blockquote>
+<p>elasticsearch默认是根据相关度算分（<code>_score</code>）来排序，但是也支持自定义方式对搜索结果排序。不过分词字段无法排序，能参与排序字段类型有：<code>keyword</code>类型、数值类型、地理坐标类型、日期类型等。</p>
+<p>详细说明可以参考官方文档：</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.12/sort-search-results.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.12/sort-search-results.html</a></p>
+<p>语法说明：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET /indexName/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"> <span class="attr">&quot;match_all&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;sort&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line"> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;排序字段&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="string">&quot;排序方式asc和desc&quot;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>示例，我们按照商品价格排序：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET /items/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"> <span class="attr">&quot;match_all&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;sort&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line"> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;price&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="string">&quot;desc&quot;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h3><p>elasticsearch 默认情况下只返回top10的数据。而如果要查询更多数据就需要修改分页参数了。</p>
+<h4 id="基础分页"><a href="#基础分页" class="headerlink" title="基础分页"></a>基础分页</h4><blockquote>
+<p>elasticsearch中通过修改<code>from</code>、<code>size</code>参数来控制要返回的分页结果：</p>
+<ul>
+<li><code>from</code>：从第几个文档开始</li>
+<li><code>size</code>：总共查询几个文档</li>
+</ul>
+<p>类似于mysql中的<code>limit ?, ?</code></p>
+<p>官方文档如下：</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.12/paginate-search-results.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.12/paginate-search-results.html</a></p>
+<p>语法如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">GET /items/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;match_all&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;from&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span> <span class="comment">// 分页开始的位置，默认为0</span></span><br><span class="line">  <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">10</span><span class="punctuation">,</span>  <span class="comment">// 每页文档数量，默认10</span></span><br><span class="line">  <span class="attr">&quot;sort&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;price&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="string">&quot;desc&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="深度分页"><a href="#深度分页" class="headerlink" title="深度分页"></a>深度分页</h4><blockquote>
+<p>elasticsearch的数据一般会采用分片存储，也就是把一个索引中的数据分成N份，存储到不同节点上。这种存储方式比较有利于数据扩展，但给分页带来了一些麻烦。</p>
+<p>比如一个索引库中有100000条数据，分别存储到4个分片，每个分片25000条数据。现在每页查询10条，查询第99页。那么分页查询的条件如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /items/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;from&quot;</span><span class="punctuation">:</span> <span class="number">990</span><span class="punctuation">,</span> <span class="comment">// 从第990条开始查询</span></span><br><span class="line"><span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">10</span><span class="punctuation">,</span> <span class="comment">// 每页查询10条</span></span><br><span class="line"><span class="attr">&quot;sort&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line"> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;price&quot;</span><span class="punctuation">:</span> <span class="string">&quot;asc&quot;</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>从语句来分析，要查询第990~1000名的数据。</p>
+<p>从实现思路来分析，肯定是将所有数据排序，找出前1000名，截取其中的990~1000的部分。但问题来了，我们如何才能找到所有数据中的前1000名呢？</p>
+<p>要知道每一片的数据都不一样，第1片上的第900-1000，在另1个节点上并不一定依然是900-1000名。所以我们只能在每一个分片上都找出排名前1000的数据，然后汇总到一起，重新排序，才能找出整个索引库中真正的前1000名，此时截取990~1000的数据即可。</p>
+<p>如图：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155932281.png" alt="image-20240524155932281"></p>
+<p>试想一下，假如我们现在要查询的是第999页数据呢，是不是要找第9990~10000的数据，那岂不是需要把每个分片中的前10000名数据都查询出来，汇总在一起，在内存中排序？如果查询的分页深度更深呢，需要一次检索的数据岂不是更多？</p>
+<p>由此可知，当查询分页深度较大时，汇总数据过多，对内存和CPU会产生非常大的压力。</p>
+<p>因此elasticsearch会禁止<code>from+ size</code>超过10000的请求。</p>
+<p>针对深度分页，elasticsearch提供了两种解决方案：</p>
+<ul>
+<li><code>search after</code>：分页时需要排序，原理是从上一次的排序值开始，查询下一页数据。官方推荐使用的方式。</li>
+<li><code>scroll</code>：原理将排序后的文档id形成快照，保存下来，基于快照做分页。官方已经不推荐使用。</li>
+</ul>
+<p>详情见文档：</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.12/paginate-search-results.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.12/paginate-search-results.html</a></p>
+<p>总结：</p>
+<p>大多数情况下，我们采用普通分页就可以了。查看百度、京东等网站，会发现其分页都有限制。例如百度最多支持77页，每页不足20条。京东最多100页，每页最多60条。</p>
+<p>因此，一般我们采用限制分页深度的方式即可，无需实现深度分页。</p>
+</blockquote>
+<h3 id="高亮"><a href="#高亮" class="headerlink" title="高亮"></a>高亮</h3><h4 id="高亮原理"><a href="#高亮原理" class="headerlink" title="高亮原理"></a>高亮原理</h4><blockquote>
+<p>什么是高亮显示呢？</p>
+<p>我们在百度，京东搜索时，关键字会变成红色，比较醒目，这叫高亮显示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155943522.png" alt="image-20240524155943522"></p>
+<p>观察页面源码，你会发现两件事情：</p>
+<ul>
+<li>高亮词条都被加了<code>&lt;em&gt;</code>标签</li>
+<li><code>&lt;em&gt;</code>标签都添加了红色样式</li>
+</ul>
+<p>css样式肯定是前端实现页面的时候写好的，但是前端编写页面的时候是不知道页面要展示什么数据的，不可能给数据加标签。而服务端实现搜索功能，要是有<code>elasticsearch</code>做分词搜索，是知道哪些词条需要高亮的。</p>
+<p>因此词条的高亮标签肯定是由服务端提供数据的时候已经加上的。</p>
+<p>因此实现高亮的思路就是：</p>
+<ul>
+<li>用户输入搜索关键字搜索数据</li>
+<li>服务端根据搜索关键字到elasticsearch搜索，并给搜索结果中的关键字词条添加<code>html</code>标签</li>
+<li>前端提前给约定好的<code>html</code>标签添加<code>CSS</code>样式</li>
+</ul>
+</blockquote>
+<h4 id="实现高亮"><a href="#实现高亮" class="headerlink" title="实现高亮"></a>实现高亮</h4><blockquote>
+<p>事实上elasticsearch已经提供了给搜索关键字加标签的语法，无需我们自己编码。</p>
+<p>基本语法如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引库名<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"> <span class="attr">&quot;match&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;搜索字段&quot;</span><span class="punctuation">:</span> <span class="string">&quot;搜索关键字&quot;</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;highlight&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"> <span class="attr">&quot;fields&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;高亮字段名称&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;pre_tags&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;em&gt;&quot;</span><span class="punctuation">,</span></span><br><span class="line">     <span class="attr">&quot;post_tags&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;/em&gt;&quot;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<ul>
+<li>搜索必须有查询条件，而且是全文检索类型的查询条件，例如<code>match</code></li>
+<li>参与高亮的字段必须是<code>text</code>类型的字段</li>
+<li>默认情况下参与高亮的字段要与搜索字段一致，除非添加：<code>required_field_match=false</code></li>
+</ul>
+<p>示例：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524155954472.png" alt="image-20240524155954472"></p>
+</blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
+<p>查询的DSL是一个大的JSON对象，包含下列属性：</p>
+<ul>
+<li><code>query</code>：查询条件</li>
+<li><code>from</code>和<code>size</code>：分页条件</li>
+<li><code>sort</code>：排序条件</li>
+<li><code>highlight</code>：高亮条件</li>
+</ul>
+<p>示例：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160011333.png" alt="image-20240524160011333"></p>
+</blockquote>
+<h2 id="RestClient查询"><a href="#RestClient查询" class="headerlink" title="RestClient查询"></a>RestClient查询</h2><blockquote>
+<p>文档的查询依然使用昨天学习的 <code>RestHighLevelClient</code>对象，查询的基本步骤如下：</p>
+<ul>
+<li>1）创建<code>request</code>对象，这次是搜索，所以是<code>SearchRequest</code></li>
+<li>2）准备请求参数，也就是查询DSL对应的JSON参数</li>
+<li>3）发起请求</li>
+<li>4）解析响应，响应结果相对复杂，需要逐层解析</li>
+</ul>
+</blockquote>
+<h3 id="快速入门-1"><a href="#快速入门-1" class="headerlink" title="快速入门"></a>快速入门</h3><blockquote>
+<p>之前说过，由于Elasticsearch对外暴露的接口都是Restful风格的接口，因此JavaAPI调用就是在发送Http请求。而我们核心要做的就是利用利用Java代码组织请求参数，解析响应结果。</p>
+<p>这个参数的格式完全参考DSL查询语句的JSON结构，因此我们在学习的过程中，会不断的把JavaAPI与DSL语句对比。大家在学习记忆的过程中，也应该这样对比学习。</p>
+</blockquote>
+<h4 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h4><blockquote>
+<p>首先以<code>match_all</code>查询为例，其DSL和JavaAPI的对比如图：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160022122.png" alt="image-20240524160022122"></p>
+<p>代码解读：</p>
+<ul>
+<li>第一步，创建<code>SearchRequest</code>对象，指定索引库名 </li>
+<li>第二步，利用<code>request.source()</code>构建DSL，DSL中可以包含查询、分页、排序、高亮等 </li>
+<li><code>query()</code>：代表查询条件，利用<code>QueryBuilders.matchAllQuery()</code>构建一个<code>match_all</code>查询的DSL</li>
+<li>第三步，利用<code>client.search()</code>发送请求，得到响应</li>
+</ul>
+<p>这里关键的API有两个，一个是<code>request.source()</code>，它构建的就是DSL中的完整JSON参数。其中包含了<code>query</code>、<code>sort</code>、<code>from</code>、<code>size</code>、<code>highlight</code>等所有功能：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160033905.png" alt="image-20240524160033905"></p>
+<p>另一个是<code>QueryBuilders</code>，其中包含了我们学习过的各种叶子查询、复合查询等：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160043068.png" alt="image-20240524160043068"></p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4></blockquote>
+<h4 id="解析响应结果"><a href="#解析响应结果" class="headerlink" title="解析响应结果"></a>解析响应结果</h4><blockquote>
+<p>在发送请求以后，得到了响应结果<code>SearchResponse</code>，这个类的结构与我们在kibana中看到的响应结果JSON结构完全一致：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;took&quot;</span> <span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;timed_out&quot;</span> <span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;hits&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;total&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;value&quot;</span> <span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;relation&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;eq&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;max_score&quot;</span> <span class="punctuation">:</span> <span class="number">1.0</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;hits&quot;</span> <span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;_index&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;heima&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;_type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;_doc&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;_id&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;_score&quot;</span> <span class="punctuation">:</span> <span class="number">1.0</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;_source&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;info&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;Java讲师&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;name&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;赵云&quot;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>因此，我们解析<code>SearchResponse</code>的代码就是在解析这个JSON结果，对比如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160054953.png" alt="image-20240524160054953"></p>
+<p>代码解读：</p>
+<p>elasticsearch返回的结果是一个JSON字符串，结构包含：</p>
+<ul>
+<li><code>hits</code>：命中的结果 <ul>
+<li><code>total</code>：总条数，其中的value是具体的总条数值</li>
+<li><code>max_score</code>：所有结果中得分最高的文档的相关性算分</li>
+<li><code>hits</code>：搜索结果的文档数组，其中的每个文档都是一个json对象 <ul>
+<li><code>_source</code>：文档中的原始数据，也是json对象</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>因此，我们解析响应结果，就是逐层解析JSON字符串，流程如下：</p>
+<ul>
+<li><code>SearchHits</code>：通过<code>response.getHits()</code>获取，就是JSON中的最外层的<code>hits</code>，代表命中的结果 <ul>
+<li><code>SearchHits#getTotalHits().value</code>：获取总条数信息</li>
+<li><code>SearchHits#getHits()</code>：获取<code>SearchHit</code>数组，也就是文档数组 <ul>
+<li><code>SearchHit#getSourceAsString()</code>：获取文档结果中的<code>_source</code>，也就是原始的<code>json</code>文档数据</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><blockquote>
+<p>文档搜索的基本步骤是：</p>
+<ol>
+<li>创建<code>SearchRequest</code>对象</li>
+<li>准备<code>request.source()</code>，也就是DSL。<ol>
+<li><code>QueryBuilders</code>来构建查询条件</li>
+<li>传入<code>request.source()</code> 的<code>query()</code>方法</li>
+</ol>
+</li>
+<li>发送请求，得到结果</li>
+<li>解析结果（参考JSON结果，从外到内，逐层解析）</li>
+</ol>
+<p>完整代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testMatchAll</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// 1.创建Request</span></span><br><span class="line">    <span class="type">SearchRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchRequest</span>(<span class="string">&quot;items&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.组织请求参数</span></span><br><span class="line">    request.source().query(QueryBuilders.matchAllQuery());</span><br><span class="line">    <span class="comment">// 3.发送请求</span></span><br><span class="line">    <span class="type">SearchResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.search(request, RequestOptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 4.解析响应</span></span><br><span class="line">    handleResponse(response);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">handleResponse</span><span class="params">(SearchResponse response)</span> &#123;</span><br><span class="line">    <span class="type">SearchHits</span> <span class="variable">searchHits</span> <span class="operator">=</span> response.getHits();</span><br><span class="line">    <span class="comment">// 1.获取总条数</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">total</span> <span class="operator">=</span> searchHits.getTotalHits().value;</span><br><span class="line">    System.out.println(<span class="string">&quot;共搜索到&quot;</span> + total + <span class="string">&quot;条数据&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.遍历结果数组</span></span><br><span class="line">    SearchHit[] hits = searchHits.getHits();</span><br><span class="line">    <span class="keyword">for</span> (SearchHit hit : hits) &#123;</span><br><span class="line">        <span class="comment">// 3.得到_source，也就是原始json文档</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">source</span> <span class="operator">=</span> hit.getSourceAsString();</span><br><span class="line">        <span class="comment">// 4.反序列化并打印</span></span><br><span class="line">        <span class="type">ItemDoc</span> <span class="variable">item</span> <span class="operator">=</span> JSONUtil.toBean(source, ItemDoc.class);</span><br><span class="line">        System.out.println(item);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="叶子查询-1"><a href="#叶子查询-1" class="headerlink" title="叶子查询"></a>叶子查询</h3><blockquote>
+<p>所有的查询条件都是由QueryBuilders来构建的，叶子查询也不例外。因此整套代码中变化的部分仅仅是query条件构造的方式，其它不动。</p>
+<p>例如<code>match</code>查询：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testMatch</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// 1.创建Request</span></span><br><span class="line">    <span class="type">SearchRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchRequest</span>(<span class="string">&quot;items&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.组织请求参数</span></span><br><span class="line">    request.source().query(QueryBuilders.matchQuery(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;脱脂牛奶&quot;</span>));</span><br><span class="line">    <span class="comment">// 3.发送请求</span></span><br><span class="line">    <span class="type">SearchResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.search(request, RequestOptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 4.解析响应</span></span><br><span class="line">    handleResponse(response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再比如<code>multi_match</code>查询：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testMultiMatch</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// 1.创建Request</span></span><br><span class="line">    <span class="type">SearchRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchRequest</span>(<span class="string">&quot;items&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.组织请求参数</span></span><br><span class="line">    request.source().query(QueryBuilders.multiMatchQuery(<span class="string">&quot;脱脂牛奶&quot;</span>, <span class="string">&quot;name&quot;</span>, <span class="string">&quot;category&quot;</span>));</span><br><span class="line">    <span class="comment">// 3.发送请求</span></span><br><span class="line">    <span class="type">SearchResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.search(request, RequestOptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 4.解析响应</span></span><br><span class="line">    handleResponse(response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还有<code>range</code>查询：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testRange</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// 1.创建Request</span></span><br><span class="line">    <span class="type">SearchRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchRequest</span>(<span class="string">&quot;items&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.组织请求参数</span></span><br><span class="line">    request.source().query(QueryBuilders.rangeQuery(<span class="string">&quot;price&quot;</span>).gte(<span class="number">10000</span>).lte(<span class="number">30000</span>));</span><br><span class="line">    <span class="comment">// 3.发送请求</span></span><br><span class="line">    <span class="type">SearchResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.search(request, RequestOptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 4.解析响应</span></span><br><span class="line">    handleResponse(response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还有<code>term</code>查询：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testTerm</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// 1.创建Request</span></span><br><span class="line">    <span class="type">SearchRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchRequest</span>(<span class="string">&quot;items&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.组织请求参数</span></span><br><span class="line">    request.source().query(QueryBuilders.termQuery(<span class="string">&quot;brand&quot;</span>, <span class="string">&quot;华为&quot;</span>));</span><br><span class="line">    <span class="comment">// 3.发送请求</span></span><br><span class="line">    <span class="type">SearchResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.search(request, RequestOptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 4.解析响应</span></span><br><span class="line">    handleResponse(response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="复合查询-1"><a href="#复合查询-1" class="headerlink" title="复合查询"></a>复合查询</h3><blockquote>
+<p>复合查询也是由<code>QueryBuilders</code>来构建，我们以<code>bool</code>查询为例，DSL和JavaAPI的对比如图：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160113502.png" alt="image-20240524160113502"></p>
+<p>完整代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testBool</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// 1.创建Request</span></span><br><span class="line">    <span class="type">SearchRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchRequest</span>(<span class="string">&quot;items&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.组织请求参数</span></span><br><span class="line">    <span class="comment">// 2.1.准备bool查询</span></span><br><span class="line">    <span class="type">BoolQueryBuilder</span> <span class="variable">bool</span> <span class="operator">=</span> QueryBuilders.boolQuery();</span><br><span class="line">    <span class="comment">// 2.2.关键字搜索</span></span><br><span class="line">    bool.must(QueryBuilders.matchQuery(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;脱脂牛奶&quot;</span>));</span><br><span class="line">    <span class="comment">// 2.3.品牌过滤</span></span><br><span class="line">    bool.filter(QueryBuilders.termQuery(<span class="string">&quot;brand&quot;</span>, <span class="string">&quot;德亚&quot;</span>));</span><br><span class="line">    <span class="comment">// 2.4.价格过滤</span></span><br><span class="line">    bool.filter(QueryBuilders.rangeQuery(<span class="string">&quot;price&quot;</span>).lte(<span class="number">30000</span>));</span><br><span class="line">    request.source().query(bool);</span><br><span class="line">    <span class="comment">// 3.发送请求</span></span><br><span class="line">    <span class="type">SearchResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.search(request, RequestOptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 4.解析响应</span></span><br><span class="line">    handleResponse(response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="排序和分页"><a href="#排序和分页" class="headerlink" title="排序和分页"></a>排序和分页</h3><blockquote>
+<p>之前说过，<code>requeset.source()</code>就是整个请求JSON参数，所以排序、分页都是基于这个来设置，其DSL和JavaAPI的对比如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160125888.png" alt="image-20240524160125888"></p>
+<p>完整示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testPageAndSort</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">pageNo</span> <span class="operator">=</span> <span class="number">1</span>, pageSize = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1.创建Request</span></span><br><span class="line">    <span class="type">SearchRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchRequest</span>(<span class="string">&quot;items&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.组织请求参数</span></span><br><span class="line">    <span class="comment">// 2.1.搜索条件参数</span></span><br><span class="line">    request.source().query(QueryBuilders.matchQuery(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;脱脂牛奶&quot;</span>));</span><br><span class="line">    <span class="comment">// 2.2.排序参数</span></span><br><span class="line">    request.source().sort(<span class="string">&quot;price&quot;</span>, SortOrder.ASC);</span><br><span class="line">    <span class="comment">// 2.3.分页参数</span></span><br><span class="line">    request.source().from((pageNo - <span class="number">1</span>) * pageSize).size(pageSize);</span><br><span class="line">    <span class="comment">// 3.发送请求</span></span><br><span class="line">    <span class="type">SearchResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.search(request, RequestOptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 4.解析响应</span></span><br><span class="line">    handleResponse(response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="高亮-1"><a href="#高亮-1" class="headerlink" title="高亮"></a>高亮</h3><blockquote>
+<p>高亮查询与前面的查询有两点不同：</p>
+<ul>
+<li>条件同样是在<code>request.source()</code>中指定，只不过高亮条件要基于<code>HighlightBuilder</code>来构造</li>
+<li>高亮响应结果与搜索的文档结果不在一起，需要单独解析</li>
+</ul>
+<p>首先来看高亮条件构造，其DSL和JavaAPI的对比如图：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160138316.png" alt="image-20240524160138316"></p>
+<p>示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testHighlight</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// 1.创建Request</span></span><br><span class="line">    <span class="type">SearchRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchRequest</span>(<span class="string">&quot;items&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.组织请求参数</span></span><br><span class="line">    <span class="comment">// 2.1.query条件</span></span><br><span class="line">    request.source().query(QueryBuilders.matchQuery(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;脱脂牛奶&quot;</span>));</span><br><span class="line">    <span class="comment">// 2.2.高亮条件</span></span><br><span class="line">    request.source().highlighter(</span><br><span class="line">            SearchSourceBuilder.highlight()</span><br><span class="line">                    .field(<span class="string">&quot;name&quot;</span>)</span><br><span class="line">                    .preTags(<span class="string">&quot;&lt;em&gt;&quot;</span>)</span><br><span class="line">                    .postTags(<span class="string">&quot;&lt;/em&gt;&quot;</span>)</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">// 3.发送请求</span></span><br><span class="line">    <span class="type">SearchResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.search(request, RequestOptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 4.解析响应</span></span><br><span class="line">    handleResponse(response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再来看结果解析，文档解析的部分不变，主要是高亮内容需要单独解析出来，其DSL和JavaAPI的对比如图：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160152243.png" alt="image-20240524160152243"></p>
+<p>代码解读：</p>
+<ul>
+<li>第<code>3、4</code>步：从结果中获取<code>_source</code>。<code>hit.getSourceAsString()</code>，这部分是非高亮结果，json字符串。还需要反序列为<code>ItemDoc</code>对象</li>
+<li>第<code>5</code>步：获取高亮结果。<code>hit.getHighlightFields()</code>，返回值是一个<code>Map</code>，key是高亮字段名称，值是<code>HighlightField</code>对象，代表高亮值</li>
+<li>第<code>5.1</code>步：从<code>Map</code>中根据高亮字段名称，获取高亮字段值对象<code>HighlightField</code></li>
+<li>第<code>5.2</code>步：从<code>HighlightField</code>中获取<code>Fragments</code>，并且转为字符串。这部分就是真正的高亮字符串了</li>
+<li>最后：用高亮的结果替换<code>ItemDoc</code>中的非高亮结果</li>
+</ul>
+<p>完整代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">handleResponse</span><span class="params">(SearchResponse response)</span> &#123;</span><br><span class="line">    <span class="type">SearchHits</span> <span class="variable">searchHits</span> <span class="operator">=</span> response.getHits();</span><br><span class="line">    <span class="comment">// 1.获取总条数</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">total</span> <span class="operator">=</span> searchHits.getTotalHits().value;</span><br><span class="line">    System.out.println(<span class="string">&quot;共搜索到&quot;</span> + total + <span class="string">&quot;条数据&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.遍历结果数组</span></span><br><span class="line">    SearchHit[] hits = searchHits.getHits();</span><br><span class="line">    <span class="keyword">for</span> (SearchHit hit : hits) &#123;</span><br><span class="line">        <span class="comment">// 3.得到_source，也就是原始json文档</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">source</span> <span class="operator">=</span> hit.getSourceAsString();</span><br><span class="line">        <span class="comment">// 4.反序列化</span></span><br><span class="line">        <span class="type">ItemDoc</span> <span class="variable">item</span> <span class="operator">=</span> JSONUtil.toBean(source, ItemDoc.class);</span><br><span class="line">        <span class="comment">// 5.获取高亮结果</span></span><br><span class="line">        Map&lt;String, HighlightField&gt; hfs = hit.getHighlightFields();</span><br><span class="line">        <span class="keyword">if</span> (CollUtils.isNotEmpty(hfs)) &#123;</span><br><span class="line">            <span class="comment">// 5.1.有高亮结果，获取name的高亮结果</span></span><br><span class="line">            <span class="type">HighlightField</span> <span class="variable">hf</span> <span class="operator">=</span> hfs.get(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (hf != <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="comment">// 5.2.获取第一个高亮结果片段，就是商品名称的高亮值</span></span><br><span class="line">                <span class="type">String</span> <span class="variable">hfName</span> <span class="operator">=</span> hf.getFragments()[<span class="number">0</span>].string();</span><br><span class="line">                item.setName(hfName);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(item);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="数据聚合"><a href="#数据聚合" class="headerlink" title="数据聚合"></a>数据聚合</h2><blockquote>
+<p>聚合（<code>aggregations</code>）可以让我们极其方便的实现对数据的统计、分析、运算。例如：</p>
+<ul>
+<li>什么品牌的手机最受欢迎？</li>
+<li>这些手机的平均价格、最高价格、最低价格？</li>
+<li>这些手机每月的销售情况如何？</li>
+</ul>
+<p>实现这些统计功能的比数据库的sql要方便的多，而且查询速度非常快，可以实现近实时搜索效果。</p>
+<p>官方文档：</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.12/search-aggregations.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.12/search-aggregations.html</a></p>
+<p>聚合常见的有三类：</p>
+<ul>
+<li>桶（**<code>Bucket</code>**<strong>）</strong>聚合：用来对文档做分组 </li>
+<li><code>TermAggregation</code>：按照文档字段值分组，例如按照品牌值分组、按照国家分组</li>
+<li><code>Date Histogram</code>：按照日期阶梯分组，例如一周为一组，或者一月为一组</li>
+<li>度量（**<code>Metric</code>**<strong>）</strong>聚合：用以计算一些值，比如：最大值、最小值、平均值等 </li>
+<li><code>Avg</code>：求平均值</li>
+<li><code>Max</code>：求最大值</li>
+<li><code>Min</code>：求最小值</li>
+<li><code>Stats</code>：同时求<code>max</code>、<code>min</code>、<code>avg</code>、<code>sum</code>等</li>
+<li>管道（**<code>pipeline</code>**<strong>）</strong>聚合：其它聚合的结果为基础做进一步运算</li>
+</ul>
+<p>注意：参加聚合的字段必须是keyword、日期、数值、布尔类型</p>
+</blockquote>
+<h3 id="DSL实现聚合"><a href="#DSL实现聚合" class="headerlink" title="DSL实现聚合"></a>DSL实现聚合</h3><p>与之前的搜索功能类似，我们依然先学习DSL的语法，再学习JavaAPI.</p>
+<h3 id="Bucket聚合"><a href="#Bucket聚合" class="headerlink" title="Bucket聚合"></a>Bucket聚合</h3><blockquote>
+<p>例如我们要统计所有商品中共有哪些商品分类，其实就是以分类（category）字段对数据分组。category值一样的放在同一组，属于<code>Bucket</code>聚合中的<code>Term</code>聚合。</p>
+<p>基本语法如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">GET /items/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;category_agg&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;terms&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;category&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">20</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>语法说明：</p>
+<ul>
+<li><code>size</code>：设置<code>size</code>为0，就是每页查0条，则结果中就不包含文档，只包含聚合</li>
+<li><code>aggs</code>：定义聚合<ul>
+<li><code>category_agg</code>：聚合名称，自定义，但不能重复<ul>
+<li><code>terms</code>：聚合的类型，按分类聚合，所以用<code>term</code><ul>
+<li><code>field</code>：参与聚合的字段名称</li>
+<li><code>size</code>：希望返回的聚合结果的最大数量</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>来看下查询的结果：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160211339.png" alt="image-20240524160211339"></p>
+</blockquote>
+<h4 id="带条件聚合"><a href="#带条件聚合" class="headerlink" title="带条件聚合"></a>带条件聚合</h4><blockquote>
+<p>默认情况下，Bucket聚合是对索引库的所有文档做聚合，例如我们统计商品中所有的品牌，结果如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160226635.png" alt="image-20240524160226635"></p>
+<p>可以看到统计出的品牌非常多。</p>
+<p>但真实场景下，用户会输入搜索条件，因此聚合必须是对搜索结果聚合。那么聚合必须添加限定条件。</p>
+<p>例如，我想知道价格高于3000元的手机品牌有哪些，该怎么统计呢？</p>
+<p>我们需要从需求中分析出搜索查询的条件和聚合的目标：</p>
+<ul>
+<li>搜索查询条件：<ul>
+<li>价格高于3000</li>
+<li>必须是手机</li>
+</ul>
+</li>
+<li>聚合目标：统计的是品牌，肯定是对brand字段做term聚合</li>
+</ul>
+<p>语法如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">GET /items/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;bool&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;filter&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;category&quot;</span><span class="punctuation">:</span> <span class="string">&quot;手机&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;range&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;price&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;gte&quot;</span><span class="punctuation">:</span> <span class="number">300000</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;brand_agg&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;terms&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;brand&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">20</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>聚合结果如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;took&quot;</span> <span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;timed_out&quot;</span> <span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hits&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;total&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;value&quot;</span> <span class="punctuation">:</span> <span class="number">13</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;relation&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;eq&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;max_score&quot;</span> <span class="punctuation">:</span> <span class="literal"><span class="keyword">null</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;hits&quot;</span> <span class="punctuation">:</span> <span class="punctuation">[</span> <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;aggregations&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;brand_agg&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;doc_count_error_upper_bound&quot;</span> <span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;sum_other_doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;buckets&quot;</span> <span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;key&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;华为&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">7</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;key&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;Apple&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">5</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;key&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;小米&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，结果中只剩下3个品牌了。</p>
+</blockquote>
+<h4 id="Metric聚合"><a href="#Metric聚合" class="headerlink" title="Metric聚合"></a>Metric聚合</h4><blockquote>
+<p>上节课，我们统计了价格高于3000的手机品牌，形成了一个个桶。现在我们需要对桶内的商品做运算，获取每个品牌价格的最小值、最大值、平均值。</p>
+<p>这就要用到<code>Metric</code>聚合了，例如<code>stat</code>聚合，就可以同时获取<code>min</code>、<code>max</code>、<code>avg</code>等结果。</p>
+<p>语法如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">GET /items/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;bool&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;filter&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;category&quot;</span><span class="punctuation">:</span> <span class="string">&quot;手机&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;range&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;price&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;gte&quot;</span><span class="punctuation">:</span> <span class="number">300000</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;brand_agg&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;terms&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;brand&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">20</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;stats_meric&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;stats&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;price&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>query</code>部分就不说了，我们重点解读聚合部分语法。</p>
+<p>可以看到我们在<code>brand_agg</code>聚合的内部，我们新加了一个<code>aggs</code>参数。这个聚合就是<code>brand_agg</code>的子聚合，会对<code>brand_agg</code>形成的每个桶中的文档分别统计。</p>
+<ul>
+<li><code>stats_meric</code>：聚合名称<ul>
+<li><code>stats</code>：聚合类型，stats是<code>metric</code>聚合的一种<ul>
+<li><code>field</code>：聚合字段，这里选择<code>price</code>，统计价格</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>由于stats是对brand_agg形成的每个品牌桶内文档分别做统计，因此每个品牌都会统计出自己的价格最小、最大、平均值。</p>
+<p>结果如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160244988.png" alt="image-20240524160244988"></p>
+<p>另外，我们还可以让聚合按照每个品牌的价格平均值排序：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160256584.png" alt="image-20240524160256584"></p>
+</blockquote>
+<h4 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h4><blockquote>
+<p>aggs代表聚合，与query同级，此时query的作用是？</p>
+<ul>
+<li>限定聚合的的文档范围</li>
+</ul>
+<p>聚合必须的三要素：</p>
+<ul>
+<li>聚合名称</li>
+<li>聚合类型</li>
+<li>聚合字段</li>
+</ul>
+<p>聚合可配置属性有：</p>
+<ul>
+<li>size：指定聚合结果数量</li>
+<li>order：指定聚合结果排序方式</li>
+<li>field：指定聚合字段</li>
+</ul>
+</blockquote>
+<h3 id="RestClient实现聚合"><a href="#RestClient实现聚合" class="headerlink" title="RestClient实现聚合"></a>RestClient实现聚合</h3><blockquote>
+<p>可以看到在DSL中，<code>aggs</code>聚合条件与<code>query</code>条件是同一级别，都属于查询JSON参数。因此依然是利用<code>request.source()</code>方法来设置。</p>
+<p>不过聚合条件的要利用<code>AggregationBuilders</code>这个工具类来构造。DSL与JavaAPI的语法对比如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160310458.png" alt="image-20240524160310458"></p>
+<p>聚合结果与搜索文档同一级别，因此需要单独获取和解析。具体解析语法如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20240524160320766.png" alt="image-20240524160320766"></p>
+<p>完整代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testAgg</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// 1.创建Request</span></span><br><span class="line">    <span class="type">SearchRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SearchRequest</span>(<span class="string">&quot;items&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.准备请求参数</span></span><br><span class="line">    <span class="type">BoolQueryBuilder</span> <span class="variable">bool</span> <span class="operator">=</span> QueryBuilders.boolQuery()</span><br><span class="line">            .filter(QueryBuilders.termQuery(<span class="string">&quot;category&quot;</span>, <span class="string">&quot;手机&quot;</span>))</span><br><span class="line">            .filter(QueryBuilders.rangeQuery(<span class="string">&quot;price&quot;</span>).gte(<span class="number">300000</span>));</span><br><span class="line">    request.source().query(bool).size(<span class="number">0</span>);</span><br><span class="line">    <span class="comment">// 3.聚合参数</span></span><br><span class="line">    request.source().aggregation(</span><br><span class="line">            AggregationBuilders.terms(<span class="string">&quot;brand_agg&quot;</span>).field(<span class="string">&quot;brand&quot;</span>).size(<span class="number">5</span>)</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">// 4.发送请求</span></span><br><span class="line">    <span class="type">SearchResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.search(request, RequestOptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 5.解析聚合结果</span></span><br><span class="line">    <span class="type">Aggregations</span> <span class="variable">aggregations</span> <span class="operator">=</span> response.getAggregations();</span><br><span class="line">    <span class="comment">// 5.1.获取品牌聚合</span></span><br><span class="line">    <span class="type">Terms</span> <span class="variable">brandTerms</span> <span class="operator">=</span> aggregations.get(<span class="string">&quot;brand_agg&quot;</span>);</span><br><span class="line">    <span class="comment">// 5.2.获取聚合中的桶</span></span><br><span class="line">    List&lt;? <span class="keyword">extends</span> <span class="title class_">Terms</span>.Bucket&gt; buckets = brandTerms.getBuckets();</span><br><span class="line">    <span class="comment">// 5.3.遍历桶内数据</span></span><br><span class="line">    <span class="keyword">for</span> (Terms.Bucket bucket : buckets) &#123;</span><br><span class="line">        <span class="comment">// 5.4.获取桶内key</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">brand</span> <span class="operator">=</span> bucket.getKeyAsString();</span><br><span class="line">        System.out.print(<span class="string">&quot;brand = &quot;</span> + brand);</span><br><span class="line">        <span class="type">long</span> <span class="variable">count</span> <span class="operator">=</span> bucket.getDocCount();</span><br><span class="line">        System.out.println(<span class="string">&quot;; count = &quot;</span> + count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/1711095406-u1644142392678189819fm253fmtautoapp138fJPEG%20(1).webp" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/1711095406-u1644142392678189819fm253fmtautoapp138fJPEG%20(1).webp" title="头像" alt="头像"></a><div class="post-copyright__author_name">Huang_Chun</div><div class="post-copyright__author_desc">编程之路...</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="https://www.dachun.icu/2024/05/24/Elasticsearch%E8%BF%9B%E9%98%B6%E7%AF%87/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('https://www.dachun.icu/2024/05/24/Elasticsearch%E8%BF%9B%E9%98%B6%E7%AF%87/')">Elasticsearch进阶篇</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/null"/></a><div class="post-qr-code-desc"></div></li><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/null"/></a><div class="post-qr-code-desc"></div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="https://www.dachun.icu/2024/05/24/Elasticsearch%E8%BF%9B%E9%98%B6%E7%AF%87/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=Elasticsearch进阶篇&amp;url=https://www.dachun.icu/2024/05/24/Elasticsearch%E8%BF%9B%E9%98%B6%E7%AF%87/&amp;pic=https://chunimages.oss-cn-guangzhou.aliyuncs.com/df3321df4258fe27410643dd25c2f896.png" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.dachun.icu" target="_blank">ifChun</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__category-list"><a class="post-meta__box__categoryes" href="/categories/Java/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>Java<span class="categoryesPageCount">12</span></a></div><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/ES/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>ES<span class="tagsPageCount">2</span></a></div></div><div class="post_share"><div class="social-share" data-image="https://chunimages.oss-cn-guangzhou.aliyuncs.com/f39aee499e39f8993e46d41b461c05d9.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2024/05/23/20240523/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">20240523</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2024/05/22/Elasticsearch%E5%9F%BA%E7%A1%80%E7%AF%87/" title="Elasticsearch基础篇"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/f39aee499e39f8993e46d41b461c05d9.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-05-22</div><div class="title">Elasticsearch基础篇</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/1711095406-u1644142392678189819fm253fmtautoapp138fJPEG%20(1).webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description">悟已往之不谏，知来者之可追。</div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(null) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DSL%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.</span> <span class="toc-text">DSL查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="toc-number">1.1.</span> <span class="toc-text">快速入门</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%B6%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.2.</span> <span class="toc-text">叶子查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.2.1.</span> <span class="toc-text">全文检索查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B2%BE%E7%A1%AE%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.2.2.</span> <span class="toc-text">精确查询</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.3.</span> <span class="toc-text">复合查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E5%88%86%E5%87%BD%E6%95%B0%E6%9F%A5%E8%AF%A2%EF%BC%88%E9%80%89%E8%AE%B2%EF%BC%89"><span class="toc-number">1.3.1.</span> <span class="toc-text">算分函数查询（选讲）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#bool%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.3.2.</span> <span class="toc-text">bool查询</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F"><span class="toc-number">1.4.</span> <span class="toc-text">排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%A1%B5"><span class="toc-number">1.5.</span> <span class="toc-text">分页</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%88%86%E9%A1%B5"><span class="toc-number">1.5.1.</span> <span class="toc-text">基础分页</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%88%86%E9%A1%B5"><span class="toc-number">1.5.2.</span> <span class="toc-text">深度分页</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E4%BA%AE"><span class="toc-number">1.6.</span> <span class="toc-text">高亮</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%AB%98%E4%BA%AE%E5%8E%9F%E7%90%86"><span class="toc-number">1.6.1.</span> <span class="toc-text">高亮原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E9%AB%98%E4%BA%AE"><span class="toc-number">1.6.2.</span> <span class="toc-text">实现高亮</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.7.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RestClient%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.</span> <span class="toc-text">RestClient查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8-1"><span class="toc-number">2.1.</span> <span class="toc-text">快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82"><span class="toc-number">2.1.1.</span> <span class="toc-text">发送请求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">2.1.2.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E5%93%8D%E5%BA%94%E7%BB%93%E6%9E%9C"><span class="toc-number">2.1.3.</span> <span class="toc-text">解析响应结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-1"><span class="toc-number">2.1.4.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%B6%E5%AD%90%E6%9F%A5%E8%AF%A2-1"><span class="toc-number">2.2.</span> <span class="toc-text">叶子查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%90%88%E6%9F%A5%E8%AF%A2-1"><span class="toc-number">2.3.</span> <span class="toc-text">复合查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E5%92%8C%E5%88%86%E9%A1%B5"><span class="toc-number">2.4.</span> <span class="toc-text">排序和分页</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E4%BA%AE-1"><span class="toc-number">2.5.</span> <span class="toc-text">高亮</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%81%9A%E5%90%88"><span class="toc-number">3.</span> <span class="toc-text">数据聚合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DSL%E5%AE%9E%E7%8E%B0%E8%81%9A%E5%90%88"><span class="toc-number">3.1.</span> <span class="toc-text">DSL实现聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bucket%E8%81%9A%E5%90%88"><span class="toc-number">3.2.</span> <span class="toc-text">Bucket聚合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A6%E6%9D%A1%E4%BB%B6%E8%81%9A%E5%90%88"><span class="toc-number">3.2.1.</span> <span class="toc-text">带条件聚合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Metric%E8%81%9A%E5%90%88"><span class="toc-number">3.2.2.</span> <span class="toc-text">Metric聚合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-2"><span class="toc-number">3.2.3.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RestClient%E5%AE%9E%E7%8E%B0%E8%81%9A%E5%90%88"><span class="toc-number">3.3.</span> <span class="toc-text">RestClient实现聚合</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/05/24/Elasticsearch%E8%BF%9B%E9%98%B6%E7%AF%87/" title="Elasticsearch进阶篇"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/f39aee499e39f8993e46d41b461c05d9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Elasticsearch进阶篇"/></a><div class="content"><a class="title" href="/2024/05/24/Elasticsearch%E8%BF%9B%E9%98%B6%E7%AF%87/" title="Elasticsearch进阶篇">Elasticsearch进阶篇</a><time datetime="2024-05-24T08:05:01.000Z" title="发表于 2024-05-24 16:05:01">2024-05-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/23/20240523/" title="20240523"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="20240523"/></a><div class="content"><a class="title" href="/2024/05/23/20240523/" title="20240523">20240523</a><time datetime="2024-05-23T14:35:28.000Z" title="发表于 2024-05-23 22:35:28">2024-05-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/22/Elasticsearch%E5%9F%BA%E7%A1%80%E7%AF%87/" title="Elasticsearch基础篇"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/f39aee499e39f8993e46d41b461c05d9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Elasticsearch基础篇"/></a><div class="content"><a class="title" href="/2024/05/22/Elasticsearch%E5%9F%BA%E7%A1%80%E7%AF%87/" title="Elasticsearch基础篇">Elasticsearch基础篇</a><time datetime="2024-05-22T14:45:13.000Z" title="发表于 2024-05-22 22:45:13">2024-05-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/21/20240521/" title="20240521"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="20240521"/></a><div class="content"><a class="title" href="/2024/05/21/20240521/" title="20240521">20240521</a><time datetime="2024-05-21T14:20:25.000Z" title="发表于 2024-05-21 22:20:25">2024-05-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/20/20240520/" title="20240520"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/default_cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="20240520"/></a><div class="content"><a class="title" href="/2024/05/20/20240520/" title="20240520">20240520</a><time datetime="2024-05-20T14:17:38.000Z" title="发表于 2024-05-20 22:17:38">2024-05-20</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2024 By <a class="footer-bar-link" href="/" title="Huang_Chun" target="_blank">Huang_Chun</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a><a class="footer-bar-link cc" href="/copyright" title="cc协议"><i class="anzhiyufont anzhiyu-icon-copyright-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-by-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nc-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nd-line"></i></a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">26</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">7</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://github.com/beginner-Chun" title="GitHub"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="GitHub"/><span class="back-menu-item-text">GitHub</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="http://chun-huang.top/" title="个人网站"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="个人网站"/><span class="back-menu-item-text">个人网站</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=1708664797&amp;server=tencent"><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 偏爱诗歌集录</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Ajax/" style="font-size: 0.88rem;">Ajax<sup>1</sup></a><a href="/tags/CSS/" style="font-size: 0.88rem;">CSS<sup>1</sup></a><a href="/tags/ES/" style="font-size: 0.88rem;">ES<sup>2</sup></a><a href="/tags/JavaScript/" style="font-size: 0.88rem;">JavaScript<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem;">Linux<sup>1</sup></a><a href="/tags/MarkDown/" style="font-size: 0.88rem;">MarkDown<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 0.88rem;">MySQL<sup>1</sup></a><a href="/tags/Mybatis/" style="font-size: 0.88rem;">Mybatis<sup>1</sup></a><a href="/tags/Mybatis-Plus/" style="font-size: 0.88rem;">Mybatis-Plus<sup>1</sup></a><a href="/tags/RabbitMQ/" style="font-size: 0.88rem;">RabbitMQ<sup>2</sup></a><a href="/tags/SQLserver/" style="font-size: 0.88rem;">SQLserver<sup>1</sup></a><a href="/tags/SSM/" style="font-size: 0.88rem;">SSM<sup>1</sup></a><a href="/tags/SpringAi/" style="font-size: 0.88rem;">SpringAi<sup>1</sup></a><a href="/tags/SpringBoot/" style="font-size: 0.88rem;">SpringBoot<sup>1</sup></a><a href="/tags/SpringCloud/" style="font-size: 0.88rem;">SpringCloud<sup>1</sup></a><a href="/tags/SpringSecurity/" style="font-size: 0.88rem;">SpringSecurity<sup>1</sup></a><a href="/tags/TypeScript/" style="font-size: 0.88rem;">TypeScript<sup>1</sup></a><a href="/tags/docker-%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 0.88rem;">docker, 微服务<sup>1</sup></a><a href="/tags/git/" style="font-size: 0.88rem;">git<sup>1</sup></a><a href="/tags/html/" style="font-size: 0.88rem;">html<sup>1</sup></a><a href="/tags/redis/" style="font-size: 0.88rem;">redis<sup>2</sup></a><a href="/tags/vue/" style="font-size: 0.88rem;">vue<sup>1</sup></a><a href="/tags/webpack/" style="font-size: 0.88rem;">webpack<sup>1</sup></a><a href="/tags/%E6%96%87%E8%A8%80%E6%96%87/" style="font-size: 0.88rem;">文言文<sup>1</sup></a><a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 0.88rem;">日志<sup>3</sup></a><a href="/tags/%E7%95%99%E5%80%99%E4%BC%A0/" style="font-size: 0.88rem;">留候传<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8671306203&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("2024年5月2日"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2020 By 安知鱼 V1.6.12",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 Huang_Chun 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script id="click-heart" src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
