@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>Vue2+Vue3 | ifChun</title><meta name="keywords" content="vue2, vue3"><meta name="author" content="Huang_Chun"><meta name="copyright" content="Huang_Chun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#18171d"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="Vue2+Vue3"><meta name="application-name" content="Vue2+Vue3"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#18171d"><meta property="og:type" content="article"><meta property="og:title" content="Vue2+Vue3"><meta property="og:url" content="https://www.dachun.icu/2024/05/09/Vue2-Vue3/index.html"><meta property="og:site_name" content="ifChun"><meta property="og:description" content="Vue2安装Axios：npm install axios --save --legacy-peer-deps vue的概念  Vue是一个用于构建用户界面的&amp;#x3D;&amp;#x3D;渐进式框架&amp;#x3D;&amp;#x3D; vue的两种使用方式 Vue核心包开发：场景–局部模块构造 Vue核心包&amp;amp;amp"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://chunimages.oss-cn-guangzhou.aliyuncs.com/9075d253970952d3b4572ea020ae90e0.jpg"><meta property="article:author" content="Huang_Chun"><meta property="article:tag" content="java"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://chunimages.oss-cn-guangzhou.aliyuncs.com/9075d253970952d3b4572ea020ae90e0.jpg"><meta name="description" content="Vue2安装Axios：npm install axios --save --legacy-peer-deps vue的概念  Vue是一个用于构建用户界面的&amp;#x3D;&amp;#x3D;渐进式框架&amp;#x3D;&amp;#x3D; vue的两种使用方式 Vue核心包开发：场景–局部模块构造 Vue核心包&amp;amp;amp"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="https://www.dachun.icu/2024/05/09/Vue2-Vue3/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>Vue2+Vue3 | ifChun</title><meta name="keywords" content="vue2, vue3"><meta name="author" content="Huang_Chun"><meta name="copyright" content="Huang_Chun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#18171d"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="Vue2+Vue3"><meta name="application-name" content="Vue2+Vue3"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#18171d"><meta property="og:type" content="article"><meta property="og:title" content="Vue2+Vue3"><meta property="og:url" content="https://www.dachun.icu/2024/05/09/Vue2-Vue3/index.html"><meta property="og:site_name" content="ifChun"><meta property="og:description" content="Vue2安装Axios：npm install axios --save --legacy-peer-deps vue的概念  Vue是一个用于构建用户界面的渐进式框架 vue的两种使用方式 Vue核心包开发：场景–局部模块构造 Vue核心包&amp;amp;Vue插件工程化开发：场景–整站开发     创"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://chunimages.oss-cn-guangzhou.aliyuncs.com/9075d253970952d3b4572ea020ae90e0.jpg"><meta property="article:author" content="Huang_Chun"><meta property="article:tag" content="java"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://chunimages.oss-cn-guangzhou.aliyuncs.com/9075d253970952d3b4572ea020ae90e0.jpg"><meta name="description" content="Vue2安装Axios：npm install axios --save --legacy-peer-deps vue的概念  Vue是一个用于构建用户界面的渐进式框架 vue的两种使用方式 Vue核心包开发：场景–局部模块构造 Vue核心包&amp;amp;Vue插件工程化开发：场景–整站开发     创"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="https://www.dachun.icu/2024/05/09/Vue2-Vue3/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
   linkPageTop: undefined,
   peoplecanvas: undefined,
   postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
@@ -59,7 +59,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-05-11 21:51:30',
+  postUpdate: '2024-08-29 00:01:13',
   postMainColor: '',
 }</script><noscript><style type="text/css">
   #nav {
@@ -202,11 +202,10 @@ setTimeout(function(){preloader.endLoading();},10000)
 if (true) {
   document.addEventListener('pjax:send', () => { preloader.initLoading() })
   document.addEventListener('pjax:complete', () => { preloader.endLoading() })
-}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://github.com/beginner-Chun" title="GitHub"><img class="back-menu-item-icon" src="/img/favicon.ico" alt="GitHub"/><span class="back-menu-item-text">GitHub</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="http://chun-huang.top/" title="个人网站"><img class="back-menu-item-icon" src="https://image.anheyu.com/favicon.ico" alt="个人网站"/><span class="back-menu-item-text">个人网站</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">ifChun</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=1708664797&amp;server=tencent"><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 箴言</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src="/null"/></a><div class="post-qr-code-desc"></div></li><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src="/null"/></a><div class="post-qr-code-desc"></div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Ajax/" style="font-size: 1.05rem; color: rgb(56, 9, 133);">Ajax<sup>1</sup></a><a href="/tags/CSS/" style="font-size: 1.05rem; color: rgb(73, 43, 169);">CSS<sup>1</sup></a><a href="/tags/ES/" style="font-size: 1.05rem; color: rgb(169, 139, 154);">ES<sup>2</sup></a><a href="/tags/Electron/" style="font-size: 1.05rem; color: rgb(176, 198, 188);">Electron<sup>1</sup></a><a href="/tags/JavaScript/" style="font-size: 1.05rem; color: rgb(45, 117, 41);">JavaScript<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem; color: rgb(189, 84, 119);">Linux<sup>1</sup></a><a href="/tags/MarkDown/" style="font-size: 1.05rem; color: rgb(189, 68, 132);">MarkDown<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 1.05rem; color: rgb(73, 96, 15);">MySQL<sup>1</sup></a><a href="/tags/Mybatis/" style="font-size: 1.05rem; color: rgb(75, 59, 43);">Mybatis<sup>1</sup></a><a href="/tags/Mybatis-Plus/" style="font-size: 1.05rem; color: rgb(103, 151, 115);">Mybatis-Plus<sup>1</sup></a><a href="/tags/RabbitMQ/" style="font-size: 1.05rem; color: rgb(96, 181, 73);">RabbitMQ<sup>2</sup></a><a href="/tags/SQLserver/" style="font-size: 1.05rem; color: rgb(32, 78, 137);">SQLserver<sup>1</sup></a><a href="/tags/SSM/" style="font-size: 1.05rem; color: rgb(199, 179, 154);">SSM<sup>1</sup></a><a href="/tags/SpringAi/" style="font-size: 1.05rem; color: rgb(13, 129, 33);">SpringAi<sup>1</sup></a><a href="/tags/SpringBoot/" style="font-size: 1.05rem; color: rgb(50, 169, 151); font-weight: 500; color: var(--anzhiyu-lighttext)">SpringBoot<sup>1</sup></a><a href="/tags/SpringCloud/" style="font-size: 1.05rem; color: rgb(171, 72, 60);">SpringCloud<sup>1</sup></a><a href="/tags/SpringSecurity/" style="font-size: 1.05rem; color: rgb(72, 177, 87);">SpringSecurity<sup>1</sup></a><a href="/tags/TypeScript/" style="font-size: 1.05rem; color: rgb(175, 151, 81);">TypeScript<sup>1</sup></a><a href="/tags/docker-%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 1.05rem; color: rgb(166, 93, 178);">docker, 微服务<sup>1</sup></a><a href="/tags/git/" style="font-size: 1.05rem; color: rgb(197, 13, 24);">git<sup>1</sup></a><a href="/tags/html/" style="font-size: 1.05rem; color: rgb(14, 17, 196);">html<sup>1</sup></a><a href="/tags/react/" style="font-size: 1.05rem; color: rgb(19, 31, 161);">react<sup>1</sup></a><a href="/tags/redis/" style="font-size: 1.05rem; color: rgb(86, 64, 91); font-weight: 500; color: var(--anzhiyu-lighttext)">redis<sup>2</sup></a><a href="/tags/uniapp/" style="font-size: 1.05rem; color: rgb(196, 191, 171);">uniapp<sup>2</sup></a><a href="/tags/vue/" style="font-size: 1.05rem; color: rgb(186, 111, 25);">vue<sup>2</sup></a><a href="/tags/webpack/" style="font-size: 1.05rem; color: rgb(32, 138, 160);">webpack<sup>1</sup></a><a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 1.05rem; color: rgb(100, 191, 3);">微信小程序<sup>2</sup></a><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 1.05rem; color: rgb(69, 42, 67);">操作系统<sup>1</sup></a><a href="/tags/%E6%96%87%E8%A8%80%E6%96%87/" style="font-size: 1.05rem; color: rgb(59, 24, 182);">文言文<sup>1</sup></a><a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 1.05rem; color: rgb(178, 86, 18);">日志<sup>11</sup></a><a href="/tags/%E7%95%99%E5%80%99%E4%BC%A0/" style="font-size: 1.05rem; color: rgb(200, 111, 93);">留候传<sup>1</sup></a><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 1.05rem; color: rgb(21, 17, 85);">计算机组成原理<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/08/"><span class="card-archive-list-date">八月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/06/"><span class="card-archive-list-date">六月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">8</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/05/"><span class="card-archive-list-date">五月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">35</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url">前端</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/vue/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>vue</span></a></span></div></div><h1 class="post-title" itemprop="name headline">Vue2+Vue3</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-05-09T10:35:42.000Z" title="发表于 2024-05-09 18:35:42">2024-05-09</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-05-11T13:51:30.555Z" title="更新于 2024-05-11 21:51:30">2024-05-11</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">7.7k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>25分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="Vue2+Vue3"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为广西"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>广西</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/24a81653c77ec07c62fd9266531c6353.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://www.dachun.icu/2024/05/09/Vue2-Vue3/"><header><a class="post-meta-categories" href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url">前端</a><a href="/tags/vue/" tabindex="-1" itemprop="url">vue</a><h1 id="CrawlerTitle" itemprop="name headline">Vue2+Vue3</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Huang_Chun</span><time itemprop="dateCreated datePublished" datetime="2024-05-09T10:35:42.000Z" title="发表于 2024-05-09 18:35:42">2024-05-09</time><time itemprop="dateCreated datePublished" datetime="2024-05-11T13:51:30.555Z" title="更新于 2024-05-11 21:51:30">2024-05-11</time></header><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/24a81653c77ec07c62fd9266531c6353.png" alt="24a81653c77ec07c62fd9266531c6353"></p>
-<h1 id="Vue2"><a href="#Vue2" class="headerlink" title="Vue2"></a>Vue2</h1><p>安装Axios：<code>npm install axios --save --legacy-peer-deps</code></p>
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://github.com/beginner-Chun" title="GitHub"><img class="back-menu-item-icon" src="/img/favicon.ico" alt="GitHub"/><span class="back-menu-item-text">GitHub</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="http://chun-huang.top/" title="个人网站"><img class="back-menu-item-icon" src="https://image.anheyu.com/favicon.ico" alt="个人网站"/><span class="back-menu-item-text">个人网站</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">ifChun</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=1708664797&amp;server=tencent"><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/bangumis/"><i class="anzhiyufont anzhiyu-icon-bilibili faa-tada" style="font-size: 0.9em;"></i><span> 追番页</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 箴言</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src="/null"/></a><div class="post-qr-code-desc"></div></li><li class="reward-item"><a href="/null" target="_blank"><img class="post-qr-code-img" src="/null"/></a><div class="post-qr-code-desc"></div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Ajax/" style="font-size: 1.05rem; color: rgb(13, 99, 15);">Ajax<sup>1</sup></a><a href="/tags/CSS/" style="font-size: 1.05rem; color: rgb(122, 121, 48);">CSS<sup>1</sup></a><a href="/tags/ES/" style="font-size: 1.05rem; color: rgb(168, 88, 117);">ES<sup>2</sup></a><a href="/tags/Electron/" style="font-size: 1.05rem; color: rgb(45, 136, 73);">Electron<sup>1</sup></a><a href="/tags/JavaScript/" style="font-size: 1.05rem; color: rgb(195, 157, 43);">JavaScript<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem; color: rgb(112, 170, 90);">Linux<sup>1</sup></a><a href="/tags/MarkDown/" style="font-size: 1.05rem; color: rgb(162, 101, 123);">MarkDown<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 1.05rem; color: rgb(167, 143, 191);">MySQL<sup>1</sup></a><a href="/tags/Mybatis/" style="font-size: 1.05rem; color: rgb(102, 168, 26);">Mybatis<sup>1</sup></a><a href="/tags/Mybatis-Plus/" style="font-size: 1.05rem; color: rgb(70, 79, 187);">Mybatis-Plus<sup>1</sup></a><a href="/tags/RabbitMQ/" style="font-size: 1.05rem; color: rgb(20, 46, 69);">RabbitMQ<sup>2</sup></a><a href="/tags/SQLserver/" style="font-size: 1.05rem; color: rgb(174, 56, 119);">SQLserver<sup>1</sup></a><a href="/tags/SSM/" style="font-size: 1.05rem; color: rgb(6, 63, 146);">SSM<sup>1</sup></a><a href="/tags/SpringAi/" style="font-size: 1.05rem; color: rgb(107, 59, 8);">SpringAi<sup>1</sup></a><a href="/tags/SpringBoot/" style="font-size: 1.05rem; color: rgb(6, 173, 155); font-weight: 500; color: var(--anzhiyu-lighttext)">SpringBoot<sup>1</sup></a><a href="/tags/SpringCloud/" style="font-size: 1.05rem; color: rgb(197, 106, 129);">SpringCloud<sup>1</sup></a><a href="/tags/SpringSecurity/" style="font-size: 1.05rem; color: rgb(16, 151, 158);">SpringSecurity<sup>1</sup></a><a href="/tags/TypeScript/" style="font-size: 1.05rem; color: rgb(96, 57, 128);">TypeScript<sup>1</sup></a><a href="/tags/docker-%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 1.05rem; color: rgb(161, 82, 118);">docker, 微服务<sup>1</sup></a><a href="/tags/git/" style="font-size: 1.05rem; color: rgb(88, 168, 96);">git<sup>1</sup></a><a href="/tags/html/" style="font-size: 1.05rem; color: rgb(139, 140, 188);">html<sup>1</sup></a><a href="/tags/react/" style="font-size: 1.05rem; color: rgb(159, 145, 27);">react<sup>1</sup></a><a href="/tags/redis/" style="font-size: 1.05rem; color: rgb(112, 0, 124); font-weight: 500; color: var(--anzhiyu-lighttext)">redis<sup>2</sup></a><a href="/tags/uniapp/" style="font-size: 1.05rem; color: rgb(85, 198, 137);">uniapp<sup>2</sup></a><a href="/tags/vue/" style="font-size: 1.05rem; color: rgb(42, 163, 125);">vue<sup>2</sup></a><a href="/tags/webpack/" style="font-size: 1.05rem; color: rgb(197, 126, 82);">webpack<sup>1</sup></a><a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 1.05rem; color: rgb(137, 148, 52);">微信小程序<sup>2</sup></a><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 1.05rem; color: rgb(141, 160, 136);">操作系统<sup>1</sup></a><a href="/tags/%E6%96%87%E8%A8%80%E6%96%87/" style="font-size: 1.05rem; color: rgb(111, 70, 182);">文言文<sup>1</sup></a><a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 1.05rem; color: rgb(20, 80, 99);">日志<sup>11</sup></a><a href="/tags/%E7%95%99%E5%80%99%E4%BC%A0/" style="font-size: 1.05rem; color: rgb(124, 187, 31);">留候传<sup>1</sup></a><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 1.05rem; color: rgb(2, 86, 96);">计算机组成原理<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/08/"><span class="card-archive-list-date">八月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/06/"><span class="card-archive-list-date">六月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">8</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/05/"><span class="card-archive-list-date">五月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">35</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url">前端</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/vue/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>vue</span></a></span></div></div><h1 class="post-title" itemprop="name headline">Vue2+Vue3</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-05-09T10:35:42.000Z" title="发表于 2024-05-09 18:35:42">2024-05-09</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-08-28T16:01:13.377Z" title="更新于 2024-08-29 00:01:13">2024-08-29</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">7.7k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>25分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="Vue2+Vue3"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为广西"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>广西</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/24a81653c77ec07c62fd9266531c6353.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://www.dachun.icu/2024/05/09/Vue2-Vue3/"><header><a class="post-meta-categories" href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url">前端</a><a href="/tags/vue/" tabindex="-1" itemprop="url">vue</a><h1 id="CrawlerTitle" itemprop="name headline">Vue2+Vue3</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Huang_Chun</span><time itemprop="dateCreated datePublished" datetime="2024-05-09T10:35:42.000Z" title="发表于 2024-05-09 18:35:42">2024-05-09</time><time itemprop="dateCreated datePublished" datetime="2024-08-28T16:01:13.377Z" title="更新于 2024-08-29 00:01:13">2024-08-29</time></header><h1 id="Vue2"><a href="#Vue2" class="headerlink" title="Vue2"></a>Vue2</h1><p>安装Axios：<code>npm install axios --save --legacy-peer-deps</code></p>
 <h3 id="vue的概念"><a href="#vue的概念" class="headerlink" title="vue的概念"></a>vue的概念</h3><blockquote>
 <ol>
-<li>Vue是一个用于构建用户界面的&#x3D;&#x3D;渐进式框架&#x3D;&#x3D;</li>
+<li>Vue是一个用于构建用户界面的<strong>渐进式框架</strong></li>
 <li>vue的两种使用方式<ul>
 <li>Vue核心包开发：场景–局部模块构造</li>
 <li>Vue核心包&amp;Vue插件工程化开发：场景–整站开发</li>
@@ -220,7 +219,7 @@ if (true) {
 <li>准备容器</li>
 <li>引包</li>
 <li>创建Vue实例 <code>new Vue()</code></li>
-<li>指定配置项 -》 渲染数据<ul>
+<li>指定配置项 -&gt; 渲染数据<ul>
 <li>el 指定挂载点</li>
 <li>data 提供数据</li>
 </ul>
@@ -338,15 +337,19 @@ if (true) {
 </li>
 <li><p><strong>v-model</strong></p>
 <ol>
-<li>作用：给&#x3D;&#x3D;表单元素&#x3D;&#x3D;使用，双向数据绑定 -&gt;可以快速获取或设置表单元素内容。<ul>
+<li><p>作用：给&#x3D;&#x3D;表单元素&#x3D;&#x3D;使用，双向数据绑定 -&gt;可以快速获取或设置表单元素内容。</p>
+<ul>
 <li>数据变化 -&gt; 视图自动更新</li>
 <li>视图变化 -&gt; 数据自动更新</li>
 </ul>
 </li>
-<li>语法 ：<code>v-model = &quot;变量&quot;</code></li>
-<li>时间戳：+new Date()</li>
-<li>用于其他表单元素<ul>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231130203159960.png"></li>
+<li><p>语法 ：<code>v-model = &quot;变量&quot;</code></p>
+</li>
+<li><p>时间戳：+new Date()</p>
+</li>
+<li><p>用于其他表单元素</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231130203159960.png"></p>
+<ul>
 <li>它会根据控件类型自动选取正确的方法来更新元素</li>
 </ul>
 </li>
@@ -357,19 +360,19 @@ if (true) {
 <h3 id="数组方法常用"><a href="#数组方法常用" class="headerlink" title="数组方法常用"></a>数组方法常用</h3><blockquote>
 <ol>
 <li><p>filter：根据条件，保留满足条件的对应项，得到一个新数组。将新数组赋值回原数组</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*this*.list = *this*.list.filter(*item* =&gt; *item*.id != *id* )</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>*.<span class="property">list</span> = <span class="variable language_">this</span>.<span class="property">list</span>.<span class="title function_">filter</span>(<span class="function"><span class="params">item</span> =&gt;</span> item.<span class="property">id</span> != id )</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>unshift:数组添加</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">*this*.daskList.unshift(&#123;</span><br><span class="line">​     id: +**new** *Date*(),</span><br><span class="line">​     name: *this*.daskName</span><br><span class="line">​    &#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">daskList</span>.<span class="title function_">unshift</span>(&#123;</span><br><span class="line">    <span class="attr">id</span>: +<span class="keyword">new</span> <span class="title class_">Date</span>(),</span><br><span class="line">     <span class="attr">name</span>: <span class="variable language_">this</span>.<span class="property">daskName</span></span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>数组清空</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*<span class="variable language_">this</span>*.<span class="property">list</span> = []</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">list</span> = []</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>数组累加：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*<span class="variable language_">this</span>*.<span class="property">list</span>.<span class="title function_">reduce</span>(<span class="function">(<span class="params">*sum*, *item*</span>) =&gt;</span> *sum* + *item*.<span class="property">price</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">list</span>.<span class="title function_">reduce</span>(<span class="function">(<span class="params">sum, item</span>) =&gt;</span> sum + item.<span class="property">price</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>数组移除关键字：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const index = *this*.history.indexOf(*key*)</span><br><span class="line">      </span><br><span class="line">   if (index !== -1) &#123;</span><br><span class="line">      </span><br><span class="line">​    *this*.history.splice(index, 1)</span><br><span class="line">      </span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> index = <span class="variable language_">this</span>.<span class="property">history</span>.<span class="title function_">indexOf</span>(key)</span><br><span class="line">         </span><br><span class="line">   <span class="keyword">if</span> (index !== -<span class="number">1</span>) &#123;</span><br><span class="line">         </span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">history</span>.<span class="title function_">splice</span>(index, <span class="number">1</span>)</span><br><span class="line">         </span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
 </blockquote>
 <h3 id="指令修饰符"><a href="#指令修饰符" class="headerlink" title="指令修饰符"></a>指令修饰符</h3><blockquote>
@@ -441,14 +444,21 @@ if (true) {
 </blockquote>
 <h3 id="watch监听器"><a href="#watch监听器" class="headerlink" title="watch监听器"></a>watch监听器</h3><blockquote>
 <ol>
-<li>作用：监听数据变化，执行一些业务逻辑或者异步操作。</li>
-<li>语法：<ol>
-<li>简单写法 →简单类型数据，直接监听</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231201153245369.png" alt="image-20231201153245369"></li>
-<li>完整写法 -&gt;添加额外配置项<ul>
-<li><code>deep:true</code> 对复杂类型深度监视</li>
-<li><code>immediate:true</code> 初始化立刻执行一次handler方法</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231201164740714.png" alt="image-20231201164740714"></li>
+<li><p>作用：监听数据变化，执行一些业务逻辑或者异步操作。</p>
+</li>
+<li><p>语法：</p>
+<ol>
+<li><p>简单写法 →简单类型数据，直接监听</p>
+</li>
+<li><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231201153245369.png" alt="image-20231201153245369"></p>
+</li>
+<li><p>完整写法 -&gt;添加额外配置项</p>
+<ul>
+<li><p><code>deep:true</code> 对复杂类型深度监视</p>
+</li>
+<li><p><code>immediate:true</code> 初始化立刻执行一次handler方法</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231201164740714.png" alt="image-20231201164740714"></p>
+</li>
 </ul>
 </li>
 </ol>
@@ -555,8 +565,7 @@ if (true) {
 <li><p>创建.vue文件(三个组成部分)</p>
 </li>
 <li><p>在使用的组件内导入并注册</p>
-</li>
-<li><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202104720976.png" alt="image-20231202104720976"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202104720976.png" alt="image-20231202104720976"></p>
 </li>
 </ul>
 </li>
@@ -564,10 +573,11 @@ if (true) {
 </li>
 <li><p>全局注册：所有组件内都能使用</p>
 <ul>
-<li>创建.vue文件(三个组成部分)</li>
-<li>main.js中进行全局注册</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202104902291.png" alt="image-20231202104902291"></li>
-<li></li>
+<li><p>创建.vue文件(三个组成部分)</p>
+</li>
+<li><p>main.js中进行全局注册</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202104902291.png" alt="image-20231202104902291"></p>
+</li>
 </ul>
 </li>
 <li><p>注意：</p>
@@ -586,9 +596,7 @@ if (true) {
 </ul>
 </li>
 <li><p>页面开发思路</p>
-<ul>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202121704546.png" alt="image-20231202121704546"></li>
-</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202121704546.png" alt="image-20231202121704546"></p>
 </li>
 </ol>
 </blockquote>
@@ -619,21 +627,24 @@ if (true) {
 </li>
 <li><p>组件关系分类</p>
 <ol>
-<li>父子关系</li>
-<li>非父子关系<ul>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202161500292.png" alt="image-20231202161500292"></li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202161511028.png" alt="image-20231202161511028"></li>
-</ul>
+<li><p>父子关系</p>
 </li>
-<li>组件通信解决方案<ul>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202161657695.png" alt="image-20231202161657695"></li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202161704414.png" alt="image-20231202161704414"></li>
-</ul>
+<li><p>非父子关系</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202161500292.png" alt="image-20231202161500292"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202161511028.png" alt="image-20231202161511028"></p>
 </li>
-<li>父 -&gt; 子: 父组件通过props将数据传递给子组件</li>
-<li>子- &gt; 父: 子组件利用this.$emit(事件名，参数)通知父组件，进行修改更新。</li>
-<li>非父子: provide &amp; inject 或者eventbus</li>
-<li>通用方案 - &gt; vuex</li>
+<li><p>组件通信解决方案</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202161657695.png" alt="image-20231202161657695"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202161704414.png" alt="image-20231202161704414"></p>
+</li>
+<li><p>父 -&gt; 子: 父组件<strong>通过props</strong>将数据传递给子组件</p>
+</li>
+<li><p>子- &gt; 父: 子组件**利用this.$emit(事件名，参数)**通知父组件，进行修改更新。</p>
+</li>
+<li><p>非父子: <strong>provide &amp; inject 或者eventbus</strong></p>
+</li>
+<li><p>通用方案 - &gt; <strong>vuex</strong></p>
+</li>
 </ol>
 </li>
 <li><p>prop</p>
@@ -683,14 +694,18 @@ if (true) {
 </li>
 <li><p>非父子通信(拓展)-event bus &#x3D;&#x3D;事件总线&#x3D;&#x3D;</p>
 <ol>
-<li>作用：非父子组件之间，进行简易消息传递。(复杂场景 -&gt;VueX)</li>
-<li>创建一个都能访问到的事件总线(空Vue实例) -&gt; utils&#x2F;EvenBus.js</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202221052050.png" alt="image-20231202221052050"></li>
-<li>A组件(接收方)，监听Bus实例的事件</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202221130340.png" alt="image-20231202221130340"></li>
-<li>B组件(发送方)，触发Bus实例的事件</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202221203651.png" alt="image-20231202221203651"></li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202221225377.png" alt="image-20231202221225377"></li>
+<li><p>作用：非父子组件之间，进行简易消息传递。(复杂场景 -&gt;VueX)</p>
+</li>
+<li><p>创建一个都能访问到的事件总线(空Vue实例) -&gt; utils&#x2F;EvenBus.js</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202221052050.png" alt="image-20231202221052050"></p>
+</li>
+<li><p>A组件(接收方)，监听Bus实例的事件</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202221130340.png" alt="image-20231202221130340"></p>
+</li>
+<li><p>B组件(发送方)，触发Bus实例的事件</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202221203651.png" alt="image-20231202221203651"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202221225377.png" alt="image-20231202221225377"></p>
+</li>
 </ol>
 </li>
 <li><p>非父子通信(拓展) -provide &amp; inject</p>
@@ -698,15 +713,11 @@ if (true) {
 <li><p>provide &amp; inject作用：跨层级共享数据</p>
 </li>
 <li><p>父组件provide提供数据</p>
-<ul>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202225024463.png" alt="image-20231202225024463"></li>
-</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202225024463.png" alt="image-20231202225024463"></p>
 </li>
 <li><p>子&#x2F;孙inject取值使用</p>
-<ul>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202225104975.png" alt="image-20231202225104975"></li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231203130629851.png" alt="image-20231203130629851"></li>
-</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231202225104975.png" alt="image-20231202225104975"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231203130629851.png" alt="image-20231203130629851"></p>
 </li>
 <li><p>当数据类型为复杂类型如对象，推荐使用此方法</p>
 </li>
@@ -1064,8 +1075,9 @@ if (true) {
 <h3 id="ESlint代码规范"><a href="#ESlint代码规范" class="headerlink" title="ESlint代码规范"></a>ESlint代码规范</h3><blockquote>
 <p>代码规范错误</p>
 <ul>
-<li>自动修正：基于vscode插件Eslint高亮错误，并通过配置自动帮助我们修复错误。</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207150123999.png" alt="image-20231207150123999"></li>
+<li><p>自动修正：基于vscode插件Eslint高亮错误，并通过配置自动帮助我们修复错误。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207150123999.png" alt="image-20231207150123999"></p>
+</li>
 </ul>
 </blockquote>
 <h3 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h3><blockquote>
@@ -1153,40 +1165,46 @@ if (true) {
 </blockquote>
 <h4 id="核心概念–actions"><a href="#核心概念–actions" class="headerlink" title="核心概念–actions"></a>核心概念–actions</h4><blockquote>
 <ol>
-<li>actions处理异步操作,&#x3D;&#x3D;不能直接操作state，要操作state，还是需要commit mutations&#x3D;&#x3D;</li>
-<li>mutations必须是同步的(便于监测数据变化，记录调试)</li>
-<li>提供actions方法<ul>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207203001748.png" alt="image-20231207203001748"></li>
-</ul>
+<li><p>actions处理异步操作,&#x3D;&#x3D;不能直接操作state，要操作state，还是需要commit mutations&#x3D;&#x3D;</p>
 </li>
-<li>页面中dispatch(派送)调用<ul>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207203824699.png" alt="image-20231207203824699"></li>
-</ul>
+<li><p>mutations必须是同步的(便于监测数据变化，记录调试)</p>
 </li>
-<li>&#x3D;&#x3D;辅助函数–mapActions&#x3D;&#x3D;<ol>
-<li>mapActions是把位于actions中的方法提取了出来，映射到组件methods中</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207205135623.png" alt="image-20231207205135623"></li>
-<li>调用</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207205250290.png" alt="image-20231207205250290"></li>
+<li><p>提供actions方法</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207203001748.png" alt="image-20231207203001748"></p>
+</li>
+<li><p>页面中dispatch(派送)调用</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207203824699.png" alt="image-20231207203824699"></p>
+</li>
+<li><p>&#x3D;&#x3D;辅助函数–mapActions&#x3D;&#x3D;</p>
+<ol>
+<li><p>mapActions是把位于actions中的方法提取了出来，映射到组件methods中</p>
+</li>
+<li><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207205135623.png" alt="image-20231207205135623"></p>
+</li>
+<li><p>调用</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207205250290.png" alt="image-20231207205250290"></p>
+</li>
 </ol>
 </li>
 </ol>
 </blockquote>
 <h4 id="核心概念-getters"><a href="#核心概念-getters" class="headerlink" title="核心概念-getters"></a>核心概念-getters</h4><blockquote>
 <ol>
-<li>类似于计算属性</li>
-<li>定义getters<ul>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207210530861.png" alt="image-20231207210530861"></li>
-</ul>
+<li><p>类似于计算属性</p>
 </li>
-<li>访问getters<ol>
+<li><p>定义getters</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207210530861.png" alt="image-20231207210530861"></p>
+</li>
+<li><p>访问getters</p>
+<ol>
 <li>通过Store访问getters</li>
 <li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207210705105.png" alt="image-20231207210705105"></li>
 <li>通过辅助函数mapGetters映射</li>
 <li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207210744778.png" alt="image-20231207210744778"></li>
 </ol>
 </li>
-<li>注意点<ul>
+<li><p>注意点</p>
+<ul>
 <li>形参第一个参数，就是state</li>
 <li>必须有返回值，返回值就是getters的值</li>
 </ul>
@@ -1195,13 +1213,19 @@ if (true) {
 </blockquote>
 <h4 id="核心概念–模块module"><a href="#核心概念–模块module" class="headerlink" title="核心概念–模块module"></a>核心概念–模块module</h4><blockquote>
 <ul>
-<li>由于Vuex使用单一状态树,应用的所有状态会集中到一个比较大的对象。当应用变得复杂时，Store对象就有可能变得相当臃肿。</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207212406590.png" alt="image-20231207212406590"></li>
-<li>模块拆分<ol>
-<li>如user模块：Store&#x2F;modules&#x2F;user.js</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207212755328.png" alt="image-20231207212755328"></li>
-<li>数据使用</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207212812009.png" alt="image-20231207212812009"></li>
+<li><p>由于Vuex使用单一状态树,应用的所有状态会集中到一个比较大的对象。当应用变得复杂时，Store对象就有可能变得相当臃肿。</p>
+</li>
+<li><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207212406590.png" alt="image-20231207212406590"></p>
+</li>
+<li><p>模块拆分</p>
+<ol>
+<li><p>如user模块：Store&#x2F;modules&#x2F;user.js</p>
+</li>
+<li><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207212755328.png" alt="image-20231207212755328"></p>
+</li>
+<li><p>数据使用</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231207212812009.png" alt="image-20231207212812009"></p>
+</li>
 </ol>
 </li>
 </ul>
@@ -1227,10 +1251,10 @@ if (true) {
 <h4 id="模块中的getters的访问"><a href="#模块中的getters的访问" class="headerlink" title="模块中的getters的访问"></a>模块中的getters的访问</h4><blockquote>
 <p>使用模块中getters中数据</p>
 <ul>
-<li>直接通过模块名访问&#x3D;&#x3D;$store.getters[‘模块名&#x2F;xxx’]&#x3D;&#x3D;</li>
+<li>直接通过模块名访问<code>$store.getters[&#39;模块名/xxx&#39;]</code></li>
 <li>通过mapGetters映射<ul>
 <li>默认根级别的映射mapGetters([‘xxx’])</li>
-<li>子模块的映射&#x3D;&#x3D;mapGetters(‘模块名’,[‘xxx’])&#x3D;&#x3D;–需要开启命名空间</li>
+<li>子模块的映射<code>mapGetters(&#39;模块名&#39;,[&#39;xxx&#39;])</code>–需要开启命名空间</li>
 </ul>
 </li>
 </ul>
@@ -1253,10 +1277,8 @@ if (true) {
 <p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231208154459080.png" alt="image-20231208154459080"></p>
 </blockquote>
 <h3 id="综合案例"><a href="#综合案例" class="headerlink" title="综合案例"></a>综合案例</h3><blockquote>
-<ul>
-<li>基于json -serve工具，准备后端接口服务环境</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231208162922004.png" alt="image-20231208162922004"></li>
-</ul>
+<p>基于json -serve工具，准备后端接口服务环境</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231208162922004.png" alt="image-20231208162922004"></p>
 </blockquote>
 <h2 id="项目实践"><a href="#项目实践" class="headerlink" title="项目实践"></a>项目实践</h2><h4 id="项目收获"><a href="#项目收获" class="headerlink" title="项目收获"></a>项目收获</h4><ul>
 <li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231208204321339.png" alt="image-20231208204321339"></li>
@@ -1306,7 +1328,7 @@ if (true) {
 <li>create-Vue的Vue新的脚手架，底层切换到了vite，为开发提供极速响应。</li>
 <li>使用create-vue项目<ol>
 <li>前提环境条件：已安装16.0或者更高的版本的Node.js</li>
-<li>创建一个Vue应用：&#x3D;&#x3D;npm init vue @latest&#x3D;&#x3D;–这一指令将会安装并执行create-vue</li>
+<li>创建一个Vue应用：<strong>npm init vue @lates</strong>t–这一指令将会安装并执行create-vue</li>
 </ol>
 </li>
 <li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231220210839768.png" alt="image-20231220210839768"></li>
@@ -1343,11 +1365,15 @@ if (true) {
 </blockquote>
 <h4 id="computed-计算属性函数"><a href="#computed-计算属性函数" class="headerlink" title="computed()计算属性函数"></a>computed()计算属性函数</h4><blockquote>
 <ol>
-<li>计算属性基本思想和vue2的完全一致，组合式API下的计算属性只是修改了写法</li>
-<li>核心步骤<ol>
-<li>导入computed函数</li>
-<li>执行函数在回调参数return基于响应式数据做计算的值，用&#x3D;&#x3D;变量接收&#x3D;&#x3D;</li>
-<li><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231220221818551.png" alt="image-20231220221818551"></li>
+<li><p>计算属性基本思想和vue2的完全一致，组合式API下的计算属性只是修改了写法</p>
+</li>
+<li><p>核心步骤</p>
+<ol>
+<li><p>导入computed函数</p>
+</li>
+<li><p>执行函数在回调参数return基于响应式数据做计算的值，用&#x3D;&#x3D;变量接收&#x3D;&#x3D;</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://chunimages.oss-cn-guangzhou.aliyuncs.com/image-20231220221818551.png" alt="image-20231220221818551"></p>
+</li>
 </ol>
 </li>
 </ol>
